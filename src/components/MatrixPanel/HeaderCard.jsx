@@ -24,7 +24,7 @@ export function HeaderCard({ title }) {
                     </div>
                     <div
                         className="absolute left-1/2 -translate-x-1/2 mt-1 text-white hidden group-hover:block text-xs bg-[#2a2a2a] px-2 py-1 rounded shadow">
-                        Remove Row/Col</div>
+                        Min Row/Col</div>
                 </div>
             </div>
             <span className="text-white font-medium">{title}</span>

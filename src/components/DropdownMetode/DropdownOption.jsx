@@ -8,10 +8,9 @@ import {
 } from "lucide-react";
 
 const icons = {
-  Invers: <FunctionSquare className="w-4 h-4 mr-2" />,
-  Eliminasi: <Divide className="w-4 h-4 mr-2" />,
-  Gauss: <Sigma className="w-4 h-4 mr-2" />,
-  Kofaktor: <Calculator className="w-4 h-4 mr-2" />,
+  Determinan: <FunctionSquare className="w-4 h-4 mr-2" />,
+  Transpose: <Divide className="w-4 h-4 mr-2" />,
+  Invers: <Sigma className="w-4 h-4 mr-2" />,
 };
 
 export function DropdownOption({ label, onSelect }) {

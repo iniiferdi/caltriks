@@ -1,6 +1,6 @@
 import { Roboto } from "next/font/google";
 import "./globals.css";
-import { CustomCursor } from '@/components/CustomCursor'
+
 
 const getRoboto = Roboto({
   variable: "--font-roboto",
@@ -21,7 +21,6 @@ export default function RootLayout({ children }) {
       >
         {children}
 
-        {/* <CustomCursor /> */}
       </body>
     </html>
   );

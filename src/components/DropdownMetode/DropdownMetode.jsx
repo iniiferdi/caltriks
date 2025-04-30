@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { DropdownOption } from "./DropdownOption";
 
-const metodeList = ["Invers", "Eliminasi", "Gauss", "Kofaktor"];
+const metodeList = ["Determinan", "Transpose", "Invers"];
 
 export function DropdownMetode() {
     const [isOpen, setIsOpen] = useState(false);
