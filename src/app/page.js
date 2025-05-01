@@ -1,6 +1,7 @@
 'use client';
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { DotBackgroundDemo } from "@/components/BackgroundDots/index";
 import { MatriksOperations } from "@/components/MatrixOperations/MatriksOperations";
@@ -18,6 +19,9 @@ export default function Home() {
   const [matrices, setMatrices] = useState(initialMatricesState);
   const [resultHistory, setResultHistory] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [errorType, setErrorType] = useState(null);
+
+
 
   const handleMatrixChange = (matrixId, row, col, valueOrMatrix) => {
     setMatrices(prev => {
@@ -41,19 +45,16 @@ export default function Home() {
   };
 
   const handleSwap = () => {
-    console.log("Swapping matrices...");
-  
     setMatrices(prev => {
-      console.log("Before swap:", prev);
       const swapped = {
         matrixA: prev.matrixB,
         matrixB: prev.matrixA,
       };
-      console.log("After swap:", swapped);
+
       return swapped;
     });
   };
-  
+
 
 
   const updateMatricesAndHistory = (result, matrixA, matrixB, type) => {
@@ -63,22 +64,27 @@ export default function Home() {
   const handleOperation = (type) => {
     try {
       const { matrixA: rawMatrixA, matrixB: rawMatrixB } = matrices;
-  
-      const matrixA = normalizeMatrix(rawMatrixA); // lakukan trimming di sini
+
+      const matrixA = normalizeMatrix(rawMatrixA);
       const matrixB = normalizeMatrix(rawMatrixB);
-  
+
       validateMatrixOperation(type, matrixA, matrixB);
-  
+
       const result = performMatrixOperation(type, matrixA, matrixB);
       updateMatricesAndHistory(result, matrixA, matrixB, type);
-  
+
       setErrorMessage(null);
     } catch (err) {
-      console.error("Invalid matrix operation", err);
       setErrorMessage(err.message);
+      setErrorType(err.name);
+
+      setTimeout(() => {
+        setErrorMessage(null);
+        setErrorType(null);
+      }, 3000);
     }
   };
-  
+
   const clearHistory = () => {
     setResultHistory([]);
   };
@@ -88,6 +94,8 @@ export default function Home() {
     setResultHistory([]);
     setErrorMessage(null);
   };
+
+
 
   return (
     <div className="relative flex flex-col min-h-screen justify-center w-full items-center py-24 bg-black">
@@ -138,11 +146,48 @@ export default function Home() {
         <ResultBox history={resultHistory} onClear={clearHistory} />
       </motion.div>
 
-      {errorMessage && (
-        <div className="absolute bottom-8 text-white bg-red-500 p-4 rounded-lg">
-          {errorMessage}
-        </div>
-      )}
+      <AnimatePresence>
+        {errorMessage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/30"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="bg-[rgba(128,120,120,0.03)] backdrop-blur-[118.2px] shadow-lg shadow-[rgba(0,0,0,0.25)] border border-[#1E1E20]  text-white px-6 py-5 rounded-xl  text-sm sm:text-base max-w-md w-full mx-4 relative overflow-hidden"
+            >
+              {/* Icon dan Judul */}
+              <div className="flex items-center gap-3 mb-2">
+                <AlertCircle className="w-6 h-6 text-red-400" />
+                <h2 className="font-semibold text-base sm:text-lg">
+                  {errorType || "Error"}
+                </h2>
+              </div>
+
+              {/* Pesan Error */}
+              <p className="text-sm sm:text-base text-gray-300">{errorMessage}</p>
+
+              {/* Countdown Bar */}
+              <motion.div
+                className="absolute bottom-0 rounded-full right-0 h-1 bg-red-500 bg-opacity-40"
+                initial={{ width: "100%" }}
+                animate={{ width: 0 }}
+                transition={{ duration: 3, ease: "linear" }}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+
+
+
     </div>
   );
 }
