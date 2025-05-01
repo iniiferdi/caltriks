@@ -20,6 +20,8 @@ export default function Home() {
   const [resultHistory, setResultHistory] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
   const [errorType, setErrorType] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
 
 
 
@@ -62,28 +64,35 @@ export default function Home() {
   };
 
   const handleOperation = (type) => {
-    try {
-      const { matrixA: rawMatrixA, matrixB: rawMatrixB } = matrices;
+    setIsLoading(true);
+    setErrorMessage(null);
+    setErrorType(null);
 
-      const matrixA = normalizeMatrix(rawMatrixA);
-      const matrixB = normalizeMatrix(rawMatrixB);
+    setTimeout(() => {
+      try {
+        const { matrixA: rawMatrixA, matrixB: rawMatrixB } = matrices;
 
-      validateMatrixOperation(type, matrixA, matrixB);
+        const matrixA = normalizeMatrix(rawMatrixA);
+        const matrixB = normalizeMatrix(rawMatrixB);
 
-      const result = performMatrixOperation(type, matrixA, matrixB);
-      updateMatricesAndHistory(result, matrixA, matrixB, type);
+        validateMatrixOperation(type, matrixA, matrixB);
 
-      setErrorMessage(null);
-    } catch (err) {
-      setErrorMessage(err.message);
-      setErrorType(err.name);
+        const result = performMatrixOperation(type, matrixA, matrixB);
+        updateMatricesAndHistory(result, matrixA, matrixB, type);
 
-      setTimeout(() => {
-        setErrorMessage(null);
-        setErrorType(null);
-      }, 3000);
-    }
+      } catch (err) {
+        setErrorMessage(err.message);
+        setErrorType(err.name);
+        setTimeout(() => {
+          setErrorMessage(null);
+          setErrorType(null);
+        }, 3000);
+      } finally {
+        setIsLoading(false);
+      }
+    }, 2000);
   };
+
 
   const clearHistory = () => {
     setResultHistory([]);
@@ -99,6 +108,19 @@ export default function Home() {
 
   return (
     <div className="relative flex flex-col min-h-screen justify-center w-full items-center py-24 bg-black">
+      {isLoading && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-white/10 text-white text-sm px-4 py-2 rounded-lg shadow-md backdrop-blur-sm"
+        >
+          <span className="animate-pulse">Memproses...</span>
+        </motion.div>
+      )}
+
+
+
       <DotBackgroundDemo />
 
       <div className="flex xl:flex-row justify-between items-center w-full relative max-w-5xl flex-col gap-12 p-12 xl:p-0">
@@ -145,6 +167,10 @@ export default function Home() {
       >
         <ResultBox history={resultHistory} onClear={clearHistory} />
       </motion.div>
+
+
+
+
 
       <AnimatePresence>
         {errorMessage && (
