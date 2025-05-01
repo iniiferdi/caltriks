@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import { HeaderCard } from "./HeaderCard";
 import { MatriksInput } from "@/components/MatrixInput/MatriksInput";
 import { DropdownMetode } from "@/components/DropdownMetode/DropdownMetode";
+import { MatrixImageUploader } from "@/components/MatrixImageUploader/MatrixImageUploader";
+
 
 const DEFAULT_ROWS = 3;
 const DEFAULT_COLS = 3;
@@ -56,6 +58,7 @@ export function MatriksPanel({ title, matrixId, matrix, onChange }) {
 
   return (
     <div className="flex gap-8 flex-col hover-target pointer-events-auto">
+
       <div className="bg-[rgba(128,120,120,0.03)] backdrop-blur-[118.2px] rounded-[24px] p-5 w-full 
         shadow-lg shadow-[rgba(0,0,0,0.25)] border border-[#1E1E20] 
         transform transition-all duration-300 ease-in-out 
@@ -66,6 +69,15 @@ export function MatriksPanel({ title, matrixId, matrix, onChange }) {
           onAdd={handleAdd}
           onRemove={handleRemove}
         />
+
+        <MatrixImageUploader
+          onMatrixExtracted={(parsedMatrix) => {
+            setLocalMatrix(parsedMatrix);
+            onChange(matrixId, null, null, parsedMatrix);
+          }}
+        />
+
+
         <MatriksInput
           matrixId={matrixId}
           matrix={localMatrix}
