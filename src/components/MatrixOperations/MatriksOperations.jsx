@@ -8,7 +8,7 @@ export function MatriksOperations({ onSwap, onOperate }) {
         if (type === 'swap') {
             onSwap();
         } else {
-            onOperate(type); // memanggil fungsi operasi dari Home
+            onOperate(type); 
         }
     };
 
