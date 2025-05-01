@@ -139,7 +139,7 @@ export default function Home() {
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.8 }}
-        className="w-full mx-auto relative max-w-5xl"
+        className="w-full mx-auto relative max-w-5xl p-12 xl:p-0"
       >
         <ResultBox history={resultHistory} />
       </motion.div>
