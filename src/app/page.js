@@ -163,9 +163,9 @@ export default function Home() {
               className="bg-[rgba(128,120,120,0.03)] backdrop-blur-[118.2px] shadow-lg shadow-[rgba(0,0,0,0.25)] border border-[#1E1E20]  text-white px-6 py-5 rounded-xl  text-sm sm:text-base max-w-md w-full mx-4 relative overflow-hidden"
             >
               {/* Icon dan Judul */}
-              <div className="flex items-center gap-3 mb-2">
+              <div className="flex items-center gap-3 mb-4">
                 <AlertCircle className="w-6 h-6 text-red-400" />
-                <h2 className="font-semibold text-base sm:text-lg">
+                <h2 className="font-medium text-base">
                   {errorType || "Error"}
                 </h2>
               </div>

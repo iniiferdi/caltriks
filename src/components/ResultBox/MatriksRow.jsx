@@ -44,7 +44,7 @@ export function MatrixRow({ index, entry }) {
     return (
         <div>
             <div className="mb-3 text-sm text-gray-400 font-medium">
-                #{index + 1} — Matriks A {opMap[entry.type]} Matriks B
+                {index + 1}. A {opMap[entry.type]} B
             </div>
 
 
