@@ -165,7 +165,7 @@ export default function Home() {
               {/* Icon dan Judul */}
               <div className="flex items-center gap-3 mb-4">
                 <AlertCircle className="w-6 h-6 text-red-400" />
-                <h2 className="font-medium text-base">
+                <h2 className="font-medium text-lg">
                   {errorType || "Error"}
                 </h2>
               </div>
