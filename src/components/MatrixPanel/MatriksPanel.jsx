@@ -1,41 +1,49 @@
 'use client';
 
-import { useState } from "react";
 import { HeaderCard } from "./HeaderCard";
 import { MatriksInput } from "../MatrixInput/MatriksInput";
 import { DropdownMetode } from "../DropdownMetode/DropdownMetode";
 
-export function MatriksPanel({ title, matrixId }) {
-  const [matrix, setMatrix] = useState([
-    [0, 0, 0],
-    [0, 0, 0],
-    [0, 0, 0],
-  ]);
+export function MatriksPanel({ title, matrixId, matrix, onChange }) {
+
+  const applyMatrixChange = (newMatrix) => {
+    onChange(matrixId, null, null, newMatrix);
+  };
+
 
   const handleClear = () => {
-    const cleared = matrix.map(row => row.map(() => 0));
-    setMatrix(cleared);
+    const cleared = matrix.map(row => row.map(() => null));
+    applyMatrixChange(cleared);
   };
 
+
   const handleAdd = () => {
-    const newMatrix = [...matrix.map(row => [...row, 0])]; // tambah kolom
-    newMatrix.push(new Array(newMatrix[0].length).fill(0)); // tambah baris
-    setMatrix(newMatrix);
+    const newMatrix = [...matrix.map(row => [...row, null])];
+    newMatrix.push(new Array(newMatrix[0].length).fill(null));
+    applyMatrixChange(newMatrix);
   };
+
 
   const handleRemove = () => {
     if (matrix.length <= 1 || matrix[0].length <= 1) return;
     const smallerMatrix = matrix
       .slice(0, matrix.length - 1)
       .map(row => row.slice(0, row.length - 1));
-    setMatrix(smallerMatrix);
+    applyMatrixChange(smallerMatrix);
   };
 
+
   const handleChange = (rowIdx, colIdx, value) => {
-    const updated = [...matrix];
-    updated[rowIdx][colIdx] = parseFloat(value) || 0;
-    setMatrix(updated);
+    const updated = matrix.map((row, r) =>
+      row.map((cell, c) =>
+        r === rowIdx && c === colIdx
+          ? (value === "" ? null : parseFloat(value))
+          : cell
+      )
+    );
+    applyMatrixChange(updated);
   };
+
 
   return (
     <div className="flex gap-8 flex-col hover-target pointer-events-auto">

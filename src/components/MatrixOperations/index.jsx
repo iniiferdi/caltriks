@@ -3,9 +3,13 @@
 import { SwapButton } from './SwapButton';
 import { OperationButton } from './OperationButton';
 
-export function MatriksOperations() {
+export function MatriksOperations({ onSwap, onOperate }) {
     const handleClick = (type) => {
-        console.log("Operasi:", type);
+        if (type === 'swap') {
+            onSwap();
+        } else {
+            onOperate(type); // memanggil fungsi operasi dari Home
+        }
     };
 
     return (
@@ -19,3 +23,4 @@ export function MatriksOperations() {
         </div>
     );
 }
+

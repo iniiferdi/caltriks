@@ -1,14 +1,18 @@
 'use client'
 
+import { motion } from 'framer-motion';
+
 export function OperationButton({ type, onClick }) {
     return (
-        <button
+        <motion.button
             onClick={() => onClick(type)}
-            className="bg-[#121212]  w-9 h-9 rounded-md flex items-center justify-center 
-                       transition-all duration-300 transform hover:scale-110 hover:bg-[#2a2a2a]
-                       shadow hover:shadow-md"
+            whileTap={{ scale: 0.9, rotate: -10 }}
+            whileHover={{ scale: 1.1, backgroundColor: '#2a2a2a' }}
+            transition={{ type: 'spring', stiffness: 300 }}
+            className="bg-[#121212] cursor-pointer w-9 h-9 rounded-md flex items-center justify-center
+                       shadow"
         >
             <img src={`/icons/${type}.svg`} alt={type} />
-        </button>
+        </motion.button>
     );
 }
