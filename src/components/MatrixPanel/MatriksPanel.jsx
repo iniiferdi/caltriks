@@ -11,7 +11,7 @@ import { MatrixImageUploader } from "@/components/MatrixImageUploader/MatrixImag
 const DEFAULT_ROWS = 3;
 const DEFAULT_COLS = 3;
 
-export function MatriksPanel({ title, matrixId, matrix, onChange }) {
+export function MatriksPanel({ title, matrixId, matrix, onChange, setIsLoading }) {
   const [localMatrix, setLocalMatrix] = useState(() =>
     matrix.length > 0
       ? matrix
@@ -75,7 +75,10 @@ export function MatriksPanel({ title, matrixId, matrix, onChange }) {
             setLocalMatrix(parsedMatrix);
             onChange(matrixId, null, null, parsedMatrix);
           }}
+          setIsLoading={setIsLoading}  // ✅ di sini benar
         />
+
+
 
 
         <MatriksInput

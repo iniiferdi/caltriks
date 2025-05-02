@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
-export function MatrixImageUploader({ onMatrixExtracted }) {
+export function MatrixImageUploader({ onMatrixExtracted, setIsLoading }) {
   const fileInputRef = useRef();
-  const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState("");
 
   const handleUploadClick = () => {
@@ -18,68 +18,75 @@ export function MatrixImageUploader({ onMatrixExtracted }) {
       return;
     }
 
-    setIsProcessing(true);
+
+    setIsLoading(true);
 
     try {
-      const formData = new FormData();
-      formData.append("apikey", "K83665041288957"); // Ganti dengan API key kamu
-      formData.append("language", "eng");
-      formData.append("isOverlayRequired", "false");
-      formData.append("file", file);
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64Image = reader.result.split(",")[1];
 
-      const res = await fetch("https://api.ocr.space/parse/image", {
-        method: "POST",
-        body: formData,
-      });
+        const formData = new FormData();
+        formData.append("apikey", "K83665041288957");
+        formData.append("language", "eng");
+        formData.append("isOverlayRequired", "false");
+        formData.append("base64Image", `data:${file.type};base64,${base64Image}`);
 
-      const result = await res.json();
-      const parsed = result?.ParsedResults?.[0]?.ParsedText;
+        const res = await fetch("https://api.ocr.space/parse/image", {
+          method: "POST",
+          body: formData,
+        });
 
-      if (!parsed) {
-        throw new Error("Tidak ada teks yang terdeteksi.");
-      }
+        const result = await res.json();
+        const parsed = result?.ParsedResults?.[0]?.ParsedText?.trim();
 
-      console.log("Hasil mentah:", parsed);
+        if (!parsed) {
+          throw new Error("Tidak ada teks yang terdeteksi.");
+        }
 
-      // Ubah hasil teks ke dalam bentuk matriks angka
-      const matrix = parsed
-        .split("\n")
-        .map((line) => {
-          const tokens = line
-            .trim()
-            .split(/[\s,]+/)
-            .filter((token) => /^\d+$/.test(token));
+        console.log("Hasil mentah:", parsed);
 
-          if (tokens.length === 1 && tokens[0].length > 1) {
-            // Jika cuma satu angka panjang (misalnya 528), pecah ke digit
-            return tokens[0].split("").map((digit) => parseInt(digit));
-          }
+        const matrix = parsed
+          .split("\n")
+          .map((line) => {
+            const tokens = line
+              .trim()
+              .split(/[\s,]+/)
+              .filter((token) => /^\d+$/.test(token));
 
-          return tokens.map(Number);
-        })
-        .filter((row) => row.length > 0);
+            if (tokens.length === 1 && tokens[0].length > 1) {
+              return tokens[0].split("").map((d) => parseInt(d));
+            }
 
-      if (matrix.length === 0) {
-        setError("Tidak ditemukan angka dalam gambar.");
-        setIsProcessing(false);
-        return;
-      }
+            return tokens.map(Number);
+          })
+          .filter((row) => row.length > 0);
 
-      console.log("Matrix dari OCR.space:", matrix);
-      onMatrixExtracted(matrix);
+        if (matrix.length === 0) {
+          setError("Tidak ditemukan angka dalam gambar.");
+          setIsLoading(false);
+          return;
+        }
+
+        console.log("Matrix dari OCR.space:", matrix);
+        onMatrixExtracted(matrix);
+        setIsLoading(false);
+      };
+
+      reader.readAsDataURL(file);
     } catch (err) {
       console.error("OCR.space error:", err);
       setError("Gagal memproses gambar dengan OCR.space.");
+      setIsLoading(false);
     }
-
-    setIsProcessing(false);
   };
+
 
   return (
     <div className="relative">
       <button
         onClick={handleUploadClick}
-        className="absolute cursor-pointer top-0 right-[-28px] mt-2 mr-2 bg-[#333] hover:bg-[#555] text-white p-2 rounded-full shadow-lg transition-all z-10"
+        className="absolute cursor-pointer top-[-64px] right-[-44px] mt-2 mr-2 bg-[#333] hover:bg-[#555] text-white p-2 rounded-full shadow-lg transition-all z-10"
         title="Upload Gambar"
       >
         <img src="/icons/camera.svg" alt="Upload matriks" className="w-4 h-4" />
@@ -93,11 +100,10 @@ export function MatrixImageUploader({ onMatrixExtracted }) {
         className="hidden"
       />
 
-      {isProcessing && (
-        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60 flex items-center justify-center text-white text-sm font-semibold z-20">
-          Memproses gambar...
-        </div>
-      )}
+   
+
+
+
 
       {error && (
         <div className="absolute bottom-[-1.5rem] left-0 text-red-500 text-xs">

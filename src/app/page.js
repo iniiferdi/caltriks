@@ -133,6 +133,7 @@ export default function Home() {
             title="Matriks A"
             matrixId="matrixA"
             matrix={matrices.matrixA}
+            setIsLoading={setIsLoading}
             onChange={handleMatrixChange}
           />
         </motion.div>
@@ -154,6 +155,7 @@ export default function Home() {
             title="Matriks B"
             matrixId="matrixB"
             matrix={matrices.matrixB}
+            setIsLoading={setIsLoading}
             onChange={handleMatrixChange}
           />
         </motion.div>
