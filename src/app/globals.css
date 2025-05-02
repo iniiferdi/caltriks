@@ -3,6 +3,8 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -111,6 +113,21 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
+
+html, body {
+  height: 100%;  /* Pastikan elemen html dan body memiliki tinggi penuh */
+  margin: 0;
+  overflow: hidden;  /* Menyembunyikan scrollbar pada body dan html */
+}
+
+body {
+  overflow: auto;  /* Biarkan halaman tetap bisa discroll */
+}
+
+::-webkit-scrollbar {
+  display: none;  /* Menyembunyikan scrollbar untuk browser berbasis Webkit */
+}
+
 
 @layer base {
   * {
