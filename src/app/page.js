@@ -90,7 +90,7 @@ export default function Home() {
       } finally {
         setIsLoading(false);
       }
-    }, 2000);
+    }, 1000);
   };
 
 
