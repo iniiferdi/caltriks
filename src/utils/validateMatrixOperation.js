@@ -28,42 +28,42 @@ export function validateMatrixOperation(type, matrixA, matrixB) {
   const { rows: rowsB, cols: colsB } = getValidDimensions(matrixB);
 
   if (!isMatrixFilled(matrixA)) {
-    const err = new Error("Matriks A tidak boleh kosong.");
-    err.name = "Validasi Matriks";
+    const err = new Error("Matrix A is required.");
+    err.name = "Matrix Validation";
     throw err;
   }
 
   const isTwoMatrixOp = type === "add" || type === "sub" || type === "mul";
   if (isTwoMatrixOp && !isMatrixFilled(matrixB)) {
-    const err = new Error("Matriks B tidak boleh kosong.");
-    err.name = "Validasi Matriks";
+    const err = new Error("Matrix B is required.");
+    err.name = "Matrix Validation";
     throw err;
   }
 
   if ((type === "add" || type === "sub") && (rowsA !== rowsB || colsA !== colsB)) {
-    const err = new Error("Matriks A dan B harus memiliki ukuran yang sama.");
-    err.name = "Validasi Operasi";
+    const err = new Error("Size mismatch.");
+    err.name = "Operation Validation";
     throw err;
   }
 
   if (type === "mul" && colsA !== rowsB) {
-    const err = new Error("Jumlah kolom Matriks A harus sama dengan jumlah baris Matriks B.");
-    err.name = "Validasi Operasi";
+    const err = new Error("Invalid size.");
+    err.name = "Operation Validation";
     throw err;
   }
 
   if (type === "det" || type === "inv") {
     if (rowsA !== colsA) {
-      const err = new Error("Matriks A harus bujur sangkar.");
-      err.name = "Validasi Operasi";
+      const err = new Error("Square matrix required.");
+      err.name = "Operation Validation";
       throw err;
     }
   }
 
   if (type === "trans") {
     if (rowsA === 0 || colsA === 0) {
-      const err = new Error("Matriks A tidak boleh kosong.");
-      err.name = "Validasi Operasi";
+      const err = new Error("Matrix A is empty.");
+      err.name = "Operation Validation";
       throw err;
     }
   }

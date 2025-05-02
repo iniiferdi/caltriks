@@ -102,8 +102,8 @@ export default function Home() {
 
   return (
     <div className="overflow-hidden relative flex flex-col min-h-screen justify-center w-full items-center py-24 bg-black">
-     
-     
+
+
       {isLoading && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -114,7 +114,7 @@ export default function Home() {
           <span className="animate-pulse">Processing...</span>
         </motion.div>
       )}
-        <DotBackgroundDemo />
+      <DotBackgroundDemo />
 
       <div className="flex xl:flex-row justify-between items-center w-full relative max-w-5xl flex-col gap-12 p-12 xl:p-0">
         <motion.div
@@ -166,39 +166,38 @@ export default function Home() {
       </motion.div>
 
       <AnimatePresence>
-        {errorMessage && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/30"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="bg-[rgba(128,120,120,0.03)] backdrop-blur-[118.2px] shadow-lg shadow-[rgba(0,0,0,0.25)] border border-[#1E1E20]  text-white px-6 py-5 rounded-xl  text-sm sm:text-base max-w-md w-full mx-4 relative overflow-hidden"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <AlertCircle className="w-6 h-6 text-red-400" />
-                <h2 className="font-medium text-lg">
-                  {errorType || "Error"}
-                </h2>
-              </div>
-              <p className="text-sm sm:text-base text-gray-300">{errorMessage}</p>
+  {errorMessage && (
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 50 }}
+      transition={{ duration: 0.3 }}
+      className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 
+                 w-[calc(100%-2rem)] sm:w-auto max-w-sm 
+                 bg-[#121212] shadow-[rgba(0,0,0,0.25)] border border-[#1E1E20]  text-white 
+                 rounded-lg shadow-lg p-3"
+    >
+      <div className="flex items-start justify-center gap-2">
+        <AlertCircle className="w-5 h-5 text-red-400" />
+        <div className="flex flex-row gap-1">
+          <h2 className="font-semibold text-sm text-white">{errorType || "Error"}:</h2>
+          <p className="text-sm text-gray-300">{errorMessage}</p>
+        </div>
+      </div>
 
-              <motion.div
-                className="absolute bottom-0 rounded-full right-0 h-1 bg-red-500 bg-opacity-40"
-                initial={{ width: "100%" }}
-                animate={{ width: 0 }}
-                transition={{ duration: 3, ease: "linear" }}
-              />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <motion.div
+        className="h-[3px] bg-white rounded-full mt-2"
+        initial={{ width: "100%" }}
+        animate={{ width: 0 }}
+        transition={{ duration: 3, ease: "linear" }}
+      />
+    </motion.div>
+  )}
+</AnimatePresence>
+
+
+
+
     </div>
   );
 }

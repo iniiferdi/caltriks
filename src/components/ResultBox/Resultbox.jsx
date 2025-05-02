@@ -16,7 +16,7 @@ export function ResultBox({ history, onClear }) {
                 </button>
             </div>
 
-            <div className="max-h-[600px] overflow-y-auto space-y-6 pr-1">
+            <div className="max-h-[600px] overflow-y-auto w-full space-y-6 pr-1">
                 <AnimatePresence>
                     {history.length === 0 ? (
                         <motion.div
