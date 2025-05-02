@@ -1,48 +1,42 @@
 'use client';
 
 import { AnimatePresence, motion } from "framer-motion";
-import { MatrixRow } from './MatriksRow';
+import { ResultCard } from "./ResultCard";
 
 export function ResultBox({ history, onClear }) {
     return (
         <div className="w-full max-w-5xl mt-16 space-y-6">
-            <div className="flex flex-row justify-between items-center">
+            <div className="flex justify-between items-center">
                 <h2 className="text-white text-lg font-semibold">Result</h2>
-                <h3
+                <button
                     className="text-white text-sm font-medium cursor-pointer hover:underline"
                     onClick={onClear}
                 >
                     Clear All
-                </h3>
+                </button>
             </div>
 
-            <AnimatePresence>
-                {history.length === 0 ? (
-                    <motion.div
-                        key="empty"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.5, ease: "easeInOut" }}
-                        className="bg-[rgba(128,120,120,0.03)] backdrop-blur-[118.2px] rounded-xl p-4 border border-[#1E1E20] shadow-inner"
-                    >
-                        <p className="text-gray-500">No result yet</p>
-                    </motion.div>
-                ) : (
-                    history.map((entry, index) => (
+            <div className="max-h-[600px] overflow-y-auto space-y-6 pr-1">
+                <AnimatePresence>
+                    {history.length === 0 ? (
                         <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -30 }}
+                            key="empty"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
                             transition={{ duration: 0.5, ease: "easeInOut" }}
-                            className="bg-[rgba(128,120,120,0.03)] backdrop-blur-[118.2px] rounded-xl p-4 border border-[#1E1E20] shadow-inner"
+                            className="bg-[rgba(128,120,120,0.03)] backdrop-blur-[118.2px] rounded-xl p-6 border border-[#1E1E20] shadow-inner text-center"
                         >
-                            <MatrixRow index={index} entry={entry} />
+                            <p className="text-gray-400 text-sm">Belum ada operasi matriks dilakukan.</p>
+                            <p className="text-gray-500 text-xs mt-1">Coba tambahkan operasi seperti penjumlahan, transpose, determinan, atau invers.</p>
                         </motion.div>
-                    ))
-                )}
-            </AnimatePresence>
+                    ) : (
+                        history.map((entry, index) => (
+                            <ResultCard key={index} entry={entry} index={index} />
+                        ))
+                    )}
+                </AnimatePresence>
+            </div>
         </div>
     );
 }
