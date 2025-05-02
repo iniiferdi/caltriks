@@ -106,7 +106,7 @@ export function MatrixImageUploader({ onMatrixExtracted, setIsLoading }) {
       <button
         onClick={handleUploadClick}
         className="absolute cursor-pointer top-[-64px] right-[-44px] mt-2 mr-2 bg-[#333] hover:bg-[#555] text-white p-2 rounded-full shadow-lg transition-all z-10"
-        title="Upload Gambar"
+        title="Upload Images"
       >
         <img src="/icons/camera.svg" alt="Upload matriks" className="w-4 h-4" />
       </button>

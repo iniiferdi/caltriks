@@ -4,12 +4,13 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AlertCircle } from "lucide-react";
 
+import { normalizeMatrix, performMatrixOperation } from '@/utils/matrixUtils';
+import { validateMatrixOperation } from "@/utils/validateMatrixOperation";
+
 import { DotBackgroundDemo } from "@/components/BackgroundDots/index";
 import { MatriksOperations } from "@/components/MatrixOperations/MatriksOperations";
 import { MatriksPanel } from "@/components/MatrixPanel/MatriksPanel";
 import { ResultBox } from "@/components/ResultBox/Resultbox";
-import { normalizeMatrix, performMatrixOperation } from '@/utils/matrixUtils';
-import { validateMatrixOperation } from "@/utils/validateMatrixOperation";
 
 const initialMatricesState = {
   matrixA: [],
@@ -100,7 +101,9 @@ export default function Home() {
   };
 
   return (
-    <div className="relative flex flex-col min-h-screen justify-center w-full items-center py-24 bg-black">
+    <div className="overflow-hidden relative flex flex-col min-h-screen justify-center w-full items-center py-24 bg-black">
+     
+     
       {isLoading && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -108,11 +111,10 @@ export default function Home() {
           exit={{ opacity: 0, y: -10 }}
           className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-white/10 text-white text-sm px-4 py-2 rounded-lg shadow-md backdrop-blur-sm"
         >
-          <span className="animate-pulse">Memproses...</span>
+          <span className="animate-pulse">Processing...</span>
         </motion.div>
       )}
-
-      <DotBackgroundDemo />
+        <DotBackgroundDemo />
 
       <div className="flex xl:flex-row justify-between items-center w-full relative max-w-5xl flex-col gap-12 p-12 xl:p-0">
         <motion.div
@@ -121,7 +123,7 @@ export default function Home() {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <MatriksPanel
-            title="Matriks A"
+            title="Matrix A"
             matrixId="matrixA"
             matrix={matrices.matrixA}
             setIsLoading={setIsLoading}
@@ -144,7 +146,7 @@ export default function Home() {
           transition={{ duration: 0.6, delay: 0.6 }}
         >
           <MatriksPanel
-            title="Matriks B"
+            title="Matrix B"
             matrixId="matrixB"
             matrix={matrices.matrixB}
             setIsLoading={setIsLoading}

@@ -17,7 +17,7 @@ export function DropdownMetode({ selected, onChange }) {
         setIsOpen(false);
         onChange?.(method.value);
     };
-    const selectedLabel = metodeList.find((m) => m.value === selected)?.label || "Pilih Metode";
+    const selectedLabel = metodeList.find((m) => m.value === selected)?.label || "Select Method";
 
     return (
         <div
