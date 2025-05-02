@@ -22,7 +22,6 @@ export function MatrixImageUploader({ onMatrixExtracted, setIsLoading }) {
       setError("File tidak valid. Harap unggah gambar.");
       return;
     }
-
     setIsLoading(true);
 
     const reader = new FileReader();
@@ -34,7 +33,7 @@ export function MatrixImageUploader({ onMatrixExtracted, setIsLoading }) {
         setIsImageUploaded(true);
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
-        
+
         const maxWidth = 800;
         const scale = Math.min(maxWidth / img.width, 1);
         const newWidth = img.width * scale;

@@ -46,8 +46,7 @@ export function MatrixRow({ index, entry }) {
             <div className="mb-3 text-sm text-gray-400 font-medium">
                 {index + 1}. A {opMap[entry.type]} B
             </div>
-
-
+            
             <div className="flex gap-4 items-center">
                 <MatrixDisplay matrix={entry.matrixA} rows={orderA.rows} cols={orderA.cols} />
                 {renderOperator(opMap[entry.type])}

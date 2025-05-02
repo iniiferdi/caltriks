@@ -1,8 +1,9 @@
 'use client';
 
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AlertCircle } from "lucide-react";
-import { useState } from "react";
+
 import { DotBackgroundDemo } from "@/components/BackgroundDots/index";
 import { MatriksOperations } from "@/components/MatrixOperations/MatriksOperations";
 import { MatriksPanel } from "@/components/MatrixPanel/MatriksPanel";
@@ -21,9 +22,6 @@ export default function Home() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [errorType, setErrorType] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
-
-
 
   const handleMatrixChange = (matrixId, row, col, valueOrMatrix) => {
     setMatrices(prev => {
@@ -56,8 +54,6 @@ export default function Home() {
       return swapped;
     });
   };
-
-
 
   const updateMatricesAndHistory = (result, matrixA, matrixB, type) => {
     setResultHistory(prev => [{ type, matrixA, matrixB, result }, ...prev]);
@@ -93,7 +89,6 @@ export default function Home() {
     }, 1000);
   };
 
-
   const clearHistory = () => {
     setResultHistory([]);
   };
@@ -103,8 +98,6 @@ export default function Home() {
     setResultHistory([]);
     setErrorMessage(null);
   };
-
-
 
   return (
     <div className="relative flex flex-col min-h-screen justify-center w-full items-center py-24 bg-black">
@@ -118,8 +111,6 @@ export default function Home() {
           <span className="animate-pulse">Memproses...</span>
         </motion.div>
       )}
-
-
 
       <DotBackgroundDemo />
 
@@ -170,10 +161,6 @@ export default function Home() {
         <ResultBox history={resultHistory} onClear={clearHistory} />
       </motion.div>
 
-
-
-
-
       <AnimatePresence>
         {errorMessage && (
           <motion.div
@@ -190,18 +177,14 @@ export default function Home() {
               transition={{ duration: 0.3, ease: "easeOut" }}
               className="bg-[rgba(128,120,120,0.03)] backdrop-blur-[118.2px] shadow-lg shadow-[rgba(0,0,0,0.25)] border border-[#1E1E20]  text-white px-6 py-5 rounded-xl  text-sm sm:text-base max-w-md w-full mx-4 relative overflow-hidden"
             >
-              {/* Icon dan Judul */}
               <div className="flex items-center gap-3 mb-4">
                 <AlertCircle className="w-6 h-6 text-red-400" />
                 <h2 className="font-medium text-lg">
                   {errorType || "Error"}
                 </h2>
               </div>
-
-              {/* Pesan Error */}
               <p className="text-sm sm:text-base text-gray-300">{errorMessage}</p>
 
-              {/* Countdown Bar */}
               <motion.div
                 className="absolute bottom-0 rounded-full right-0 h-1 bg-red-500 bg-opacity-40"
                 initial={{ width: "100%" }}
@@ -212,10 +195,6 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
-
-
-
-
     </div>
   );
 }

@@ -3,12 +3,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { MatrixRow } from './MatriksRow';
 
-const opMap = {
-    add: '+',
-    sub: '-',
-    mul: '×'
-};
-
 export function ResultBox({ history, onClear }) {
     return (
         <div className="w-full max-w-5xl mt-16 space-y-6">

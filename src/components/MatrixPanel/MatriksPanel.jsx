@@ -7,7 +7,6 @@ import { MatriksInput } from "@/components/MatrixInput/MatriksInput";
 import { DropdownMetode } from "@/components/DropdownMetode/DropdownMetode";
 import { MatrixImageUploader } from "@/components/MatrixImageUploader/MatrixImageUploader";
 
-
 const DEFAULT_ROWS = 3;
 const DEFAULT_COLS = 3;
 
@@ -75,11 +74,8 @@ export function MatriksPanel({ title, matrixId, matrix, onChange, setIsLoading }
             setLocalMatrix(parsedMatrix);
             onChange(matrixId, null, null, parsedMatrix);
           }}
-          setIsLoading={setIsLoading}  // ✅ di sini benar
+          setIsLoading={setIsLoading}
         />
-
-
-
 
         <MatriksInput
           matrixId={matrixId}
@@ -87,6 +83,7 @@ export function MatriksPanel({ title, matrixId, matrix, onChange, setIsLoading }
           onChange={handleChange}
         />
       </div>
+
       <DropdownMetode />
     </div>
   );

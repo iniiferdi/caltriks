@@ -14,7 +14,6 @@ export const normalizeMatrix = (matrix) => {
     return filteredRows.map(row => row.slice(0, maxCols));
   };
   
-
 export const performMatrixOperation = (type, matrixA, matrixB) => {
   if (type === 'add') return add(matrixA, matrixB);
   if (type === 'sub') return subtract(matrixA, matrixB);
