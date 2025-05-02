@@ -10,12 +10,14 @@ import { MatrixImageUploader } from "@/components/MatrixImageUploader/MatrixImag
 const DEFAULT_ROWS = 3;
 const DEFAULT_COLS = 3;
 
-export function MatriksPanel({ title, matrixId, matrix, onChange, setIsLoading }) {
+export function MatriksPanel({ title, matrixId, matrix, onChange, setIsLoading, onOperation }) {
   const [localMatrix, setLocalMatrix] = useState(() =>
     matrix.length > 0
       ? matrix
       : Array.from({ length: DEFAULT_ROWS }, () => Array(DEFAULT_COLS).fill(null))
   );
+  
+  const [method, setMethod] = useState(""); // Add state for selected method
 
   const handleChange = (rowIdx, colIdx, value) => {
     const updated = localMatrix.map((row, r) =>
@@ -84,8 +86,14 @@ export function MatriksPanel({ title, matrixId, matrix, onChange, setIsLoading }
         />
       </div>
 
-      <DropdownMetode />
+      <DropdownMetode
+        selected={method} // Pass selected method
+        onChange={(selectedMethod) => {
+          setMethod(selectedMethod); // Update the state for the selected method
+          onOperation(selectedMethod); // Pass to the parent component
+        }}
+      />
+
     </div>
   );
 }
-

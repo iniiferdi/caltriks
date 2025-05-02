@@ -126,6 +126,7 @@ export default function Home() {
             matrix={matrices.matrixA}
             setIsLoading={setIsLoading}
             onChange={handleMatrixChange}
+            onOperation={handleOperation}
           />
         </motion.div>
 
@@ -148,6 +149,7 @@ export default function Home() {
             matrix={matrices.matrixB}
             setIsLoading={setIsLoading}
             onChange={handleMatrixChange}
+            onOperation={handleOperation}
           />
         </motion.div>
       </div>

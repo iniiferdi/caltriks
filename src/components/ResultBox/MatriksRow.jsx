@@ -44,16 +44,32 @@ export function MatrixRow({ index, entry }) {
     return (
         <div>
             <div className="mb-3 text-sm text-gray-400 font-medium">
-                {index + 1}. A {opMap[entry.type]} B
+                {index + 1}. {entry.type === 'det' ? 'Determinan A' : `A ${opMap[entry.type] ?? entry.type} B`}
             </div>
-            
+    
             <div className="flex gap-4 items-center">
                 <MatrixDisplay matrix={entry.matrixA} rows={orderA.rows} cols={orderA.cols} />
-                {renderOperator(opMap[entry.type])}
-                <MatrixDisplay matrix={entry.matrixB} rows={orderB.rows} cols={orderB.cols} />
+    
                 {renderOperator('=')}
-                <MatrixDisplay matrix={entry.result} rows={orderR.rows} cols={orderR.cols} />
+    
+                {entry.type === 'det' ? (
+                    <div className="text-white font-bold text-xl">
+                        {entry.result}
+                    </div>
+                ) : (
+                    <>
+                        {entry.matrixB && (
+                            <>
+                                {renderOperator(opMap[entry.type])}
+                                <MatrixDisplay matrix={entry.matrixB} rows={orderB.rows} cols={orderB.cols} />
+                            </>
+                        )}
+                        {renderOperator('=')}
+                        <MatrixDisplay matrix={entry.result} rows={orderR.rows} cols={orderR.cols} />
+                    </>
+                )}
             </div>
         </div>
     );
+    
 }
