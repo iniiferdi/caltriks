@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  Calculator,
   Divide,
   Sigma,
   FunctionSquare,
@@ -16,7 +15,7 @@ const icons = {
 export function DropdownOption({ label, value, onSelect }) {
   return (
     <div
-      onClick={() => onSelect(value)} // kirim 'det', 'trans', atau 'inv'
+      onClick={() => onSelect(value)}
       className="flex items-center px-4 py-2 text-white hover:bg-[rgba(255,255,255,0.05)] cursor-pointer transition-colors"
     >
       {icons[label] || null}

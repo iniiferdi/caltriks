@@ -16,8 +16,8 @@ export function MatriksPanel({ title, matrixId, matrix, onChange, setIsLoading, 
       ? matrix
       : Array.from({ length: DEFAULT_ROWS }, () => Array(DEFAULT_COLS).fill(null))
   );
-  
-  const [method, setMethod] = useState(""); // Add state for selected method
+
+  const [method, setMethod] = useState("");
 
   const handleChange = (rowIdx, colIdx, value) => {
     const updated = localMatrix.map((row, r) =>
@@ -87,10 +87,10 @@ export function MatriksPanel({ title, matrixId, matrix, onChange, setIsLoading, 
       </div>
 
       <DropdownMetode
-        selected={method} // Pass selected method
+        selected={method}
         onChange={(selectedMethod) => {
-          setMethod(selectedMethod); // Update the state for the selected method
-          onOperation(selectedMethod); // Pass to the parent component
+          setMethod(selectedMethod);
+          onOperation(selectedMethod);
         }}
       />
 

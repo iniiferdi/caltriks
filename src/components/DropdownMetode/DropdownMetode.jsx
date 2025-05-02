@@ -4,7 +4,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { DropdownOption } from "./DropdownOption";
 
-// Pasangkan label user-friendly dengan value logika internal
 const metodeList = [
     { value: "det", label: "Determinan" },
     { value: "trans", label: "Transpose" },
@@ -14,13 +13,10 @@ const metodeList = [
 export function DropdownMetode({ selected, onChange }) {
     const [isOpen, setIsOpen] = useState(false);
 
-    // Handle method selection
     const handleSelect = (method) => {
         setIsOpen(false);
-        onChange?.(method.value); // Use onChange to pass the selected method value
+        onChange?.(method.value);
     };
-
-    // Get the selected label based on the method value
     const selectedLabel = metodeList.find((m) => m.value === selected)?.label || "Pilih Metode";
 
     return (
@@ -54,7 +50,7 @@ export function DropdownMetode({ selected, onChange }) {
                             <DropdownOption
                                 key={method.value}
                                 label={method.label}
-                                onSelect={() => handleSelect(method)} // Pass method value
+                                onSelect={() => handleSelect(method)}
                             />
                         ))}
                     </motion.div>

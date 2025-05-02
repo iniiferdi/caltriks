@@ -7,6 +7,8 @@ const opMap = {
 };
 
 const getEffectiveOrder = (matrix) => {
+    if (!Array.isArray(matrix) || matrix.length === 0) return { rows: 0, cols: 0 };
+
     const effectiveRows = matrix.filter(row => row.some(val => val !== 0));
     const effectiveCols = Math.max(
         ...effectiveRows.map(row =>
@@ -14,10 +16,7 @@ const getEffectiveOrder = (matrix) => {
         ),
         0
     );
-    return {
-        rows: effectiveRows.length,
-        cols: effectiveCols
-    };
+    return { rows: effectiveRows.length, cols: effectiveCols };
 };
 
 export function MatrixRow({ index, entry }) {
@@ -29,12 +28,9 @@ export function MatrixRow({ index, entry }) {
     const midRow = Math.floor(maxRows / 2);
 
     const renderOperator = (symbol) => (
-        <div className="">
+        <div>
             {[...Array(maxRows)].map((_, idx) => (
-                <div
-                    key={idx}
-                    className=" text-white font-bold text-xl text-center "
-                >
+                <div key={idx} className="text-white font-bold text-xl text-center">
                     {idx === midRow ? symbol : ''}
                 </div>
             ))}
@@ -46,12 +42,12 @@ export function MatrixRow({ index, entry }) {
             <div className="mb-3 text-sm text-gray-400 font-medium">
                 {index + 1}. {entry.type === 'det' ? 'Determinan A' : `A ${opMap[entry.type] ?? entry.type} B`}
             </div>
-    
+
             <div className="flex gap-4 items-center">
                 <MatrixDisplay matrix={entry.matrixA} rows={orderA.rows} cols={orderA.cols} />
-    
+
                 {renderOperator('=')}
-    
+
                 {entry.type === 'det' ? (
                     <div className="text-white font-bold text-xl">
                         {entry.result}
@@ -71,5 +67,4 @@ export function MatrixRow({ index, entry }) {
             </div>
         </div>
     );
-    
 }
