@@ -100,18 +100,30 @@ export default function Home() {
     setErrorMessage(null);
   };
 
+  const handleUseAsA = (matrix) => {
+    setMatrices(prev => ({ ...prev, matrixA: matrix }));
+  };
+
+  const handleUseAsB = (matrix) => {
+    setMatrices(prev => ({ ...prev, matrixB: matrix }));
+  };
+
+  const handleDeleteResult = (index) => {
+    setResultHistory(prev => prev.filter((_, i) => i !== index));
+  };
+
+
   const [showSplash, setShowSplash] = useState(true);
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowSplash(false); // Splash screen hilang setelah 2 detik
+      setShowSplash(false);
     }, 2000);
 
-    // Delay elemen konten muncul setelah splash screen hilang
     setTimeout(() => {
       setShowContent(true);
-    }, 2200); // Mulai menampilkan konten setelah splash screen hilang (dengan delay 200ms)
+    }, 2200);
 
     return () => clearTimeout(timer);
   }, []);
@@ -119,7 +131,7 @@ export default function Home() {
 
   return (
     <div className="overflow-hidden relative flex flex-col min-h-screen justify-center w-full items-center py-24 bg-black">
-      {/* Splash Screen */}
+
       <AnimatePresence>
         {showSplash && (
           <motion.div
@@ -218,10 +230,6 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-
-
-
-      {/* Processing indicator */}
       {isLoading && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -235,7 +243,6 @@ export default function Home() {
 
       <DotBackgroundDemo />
 
-      {/* Main content */}
       <AnimatePresence>
         {showContent && (
           <div className="flex xl:flex-row justify-between items-center w-full relative max-w-5xl flex-col gap-12 p-12 xl:p-0">
@@ -280,7 +287,6 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Result Box */}
       <AnimatePresence>
         {showContent && (
           <motion.div
@@ -290,12 +296,18 @@ export default function Home() {
             transition={{ duration: 0.7, delay: 0.8 }}
             className="w-full mx-auto relative max-w-5xl p-12 xl:p-0"
           >
-            <ResultBox history={resultHistory} onClear={clearHistory} />
+            <ResultBox
+              history={resultHistory}
+              onClear={clearHistory}
+              onUseAsA={handleUseAsA}
+              onUseAsB={handleUseAsB}
+              onDelete={handleDeleteResult}
+            />
+
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Error Message */}
       <AnimatePresence>
         {errorMessage && (
           <motion.div
