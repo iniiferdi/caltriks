@@ -1,4 +1,4 @@
-import { add, subtract, multiply, det, transpose, inv } from 'mathjs';
+import { add, subtract, multiply, det, transpose, inv, fraction, format } from 'mathjs';
 
 export const cleanMatrix = (matrix) =>
   matrix.map(row =>
@@ -42,10 +42,11 @@ export const performMatrixOperation = (type, matrixA, matrixB) => {
     case 'inv':
       try {
         const result = inv(cleanA);
-        return result.map(row => row.map(x => Number(x.toFixed(4))));
+        return result.map(row => row.map(x => format(fraction(x)))); 
       } catch (err) {
         throw new Error('Matriks tidak dapat diinvers. Pastikan matriks berbentuk persegi dan determinannya ≠ 0.');
       }
+
     default:
       throw new Error('Jenis operasi tidak dikenali');
   }
