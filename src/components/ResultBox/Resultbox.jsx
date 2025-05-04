@@ -16,7 +16,7 @@ export function ResultBox({ history, onClear, onUseAsA, onUseAsB, onDelete }) {
   }, [history]);
 
   return (
-    <div className="w-full max-w-5xl mt-36 space-y-6" ref={containerRef}>
+    <div className="w-full max-w-5xl mt-18 space-y-6" ref={containerRef}>
       <div className="flex justify-between items-center">
         <h2 className="text-white text-lg font-semibold">Result</h2>
         <button
