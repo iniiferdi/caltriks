@@ -89,6 +89,7 @@ export default function Home() {
                 onClear={clearHistory}
                 onUseAsA={(matrix) => useAsMatrix(matrix, "matrixA")}
                 onUseAsB={(matrix) => useAsMatrix(matrix, "matrixB")}
+
                 onDelete={deleteHistoryItem}
               />
             </motion.div>
@@ -110,7 +111,7 @@ export default function Home() {
           <ErrorToast errorType={error.type} errorMessage={error.message} />
         )}
       </AnimatePresence>
-      
+
     </div>
 
 
