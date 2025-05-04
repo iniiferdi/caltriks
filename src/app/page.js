@@ -1,4 +1,5 @@
-import { useMatrixState } from "@/hooks/useMatrixState";
+'use client';
+
 import { AnimatePresence, motion } from "framer-motion";
 import { DotBackgroundDemo } from "@/components/BackgroundDots";
 import { MatriksPanel } from "@/components/MatrixPanel/MatriksPanel";
@@ -7,6 +8,10 @@ import { ResultBox } from "@/components/ResultBox/Resultbox";
 import { SplachScreen } from "@/components/Animate/SplashScreen";
 import { IsLoading } from "@/components/Animate/IsLoading";
 import { ErrorToast } from "@/components/Animate/ErrorToast";
+
+import { useMatrixState } from "@/hooks/useMatrixState";
+import { useSplashTransition } from "@/hooks/useSplashTransition";
+
 import { fadeInUp, containerStagger } from "@/utils/animations";
 import { Header } from "@/components/Header/Header";
 import { Footer } from "@/components/Header/Footer";
@@ -19,10 +24,6 @@ export default function Home() {
   } = useMatrixState();
 
   const { showSplash, showContent } = useSplashTransition();
-
-  // Custom handlers for using matrix as A or B
-  const handleUseAsMatrixA = (matrix) => useAsMatrix(matrix, "matrixA");
-  const handleUseAsMatrixB = (matrix) => useAsMatrix(matrix, "matrixB");
 
   return (
     <div className="overflow-hidden relative flex flex-col min-h-screen justify-center w-full items-center pt-42 bg-black">
@@ -86,8 +87,9 @@ export default function Home() {
               <ResultBox
                 history={resultHistory}
                 onClear={clearHistory}
-                onUseAsA={handleUseAsMatrixA}  // Updated handler
-                onUseAsB={handleUseAsMatrixB}  // Updated handler
+                onUseAsA={(matrix) => useAsMatrix(matrix, "matrixA")}
+                onUseAsB={(matrix) => useAsMatrix(matrix, "matrixB")}
+
                 onDelete={deleteHistoryItem}
               />
             </motion.div>
@@ -111,5 +113,7 @@ export default function Home() {
       </AnimatePresence>
 
     </div>
+
+
   );
 }

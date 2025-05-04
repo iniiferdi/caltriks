@@ -1,5 +1,3 @@
-"use client"; 
-
 import { useState } from "react";
 import { normalizeMatrix, performMatrixOperation } from '@/utils/matrixUtils';
 import { validateMatrixOperation } from "@/utils/validateMatrixOperation";
