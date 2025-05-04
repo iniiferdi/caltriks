@@ -13,8 +13,6 @@ import { useMatrixState } from "@/hooks/useMatrixState";
 import { useSplashTransition } from "@/hooks/useSplashTransition";
 
 import { fadeInUp, containerStagger } from "@/utils/animations";
-import { Header } from "@/components/Header/Header";
-import { Footer } from "@/components/Header/Footer";
 
 export default function Home() {
   const {
@@ -26,15 +24,13 @@ export default function Home() {
   const { showSplash, showContent } = useSplashTransition();
 
   return (
-    <div className="overflow-hidden relative flex flex-col min-h-screen justify-center w-full items-center pt-42 bg-black">
+    <div className="overflow-hidden relative flex flex-col min-h-screen justify-center w-full items-center py-36 bg-black">
 
       <IsLoading isLoading={isLoading} />
       <SplachScreen showSplash={showSplash} />
       <DotBackgroundDemo />
 
-      {showContent && (
-        <Header onReset={resetAll} />
-      )}
+      
 
       <AnimatePresence>
         {showContent && (
@@ -95,15 +91,6 @@ export default function Home() {
           </>
         )}
       </AnimatePresence>
-
-      <motion.footer
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.4, duration: 0.6 }}
-        className="w-full relative"
-      >
-        <Footer />
-      </motion.footer>
 
       <AnimatePresence>
         {error.message && (
