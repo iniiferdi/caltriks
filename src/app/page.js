@@ -87,7 +87,7 @@ export default function Home() {
               <ResultBox
                 history={resultHistory}
                 onClear={clearHistory}
-                onUseAsA={(matrix) => useAsMatrix(matrix, "matrixA")}
+                onUseAsA={(matrix) => useAsMatrix(matrix, "matrixA")} 
                 onUseAsB={(matrix) => useAsMatrix(matrix, "matrixB")}
 
                 onDelete={deleteHistoryItem}

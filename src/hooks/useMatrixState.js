@@ -33,27 +33,24 @@ export function useMatrixState() {
     setMatrices(prev => ({ matrixA: prev.matrixB, matrixB: prev.matrixA }));
   };
 
-  const handleOperation = (type) => {
+  const handleOperation = async (type) => {
     setIsLoading(true);
     setError({ message: null, type: null });
 
-    setTimeout(() => {
-      try {
-        const { matrixA: rawA, matrixB: rawB } = matrices;
-        const matrixA = normalizeMatrix(rawA);
-        const matrixB = normalizeMatrix(rawB);
+    try {
+      const { matrixA: rawA, matrixB: rawB } = matrices;
+      const matrixA = normalizeMatrix(rawA);
+      const matrixB = normalizeMatrix(rawB);
 
-        validateMatrixOperation(type, matrixA, matrixB);
-        const result = performMatrixOperation(type, matrixA, matrixB);
+      validateMatrixOperation(type, matrixA, matrixB);
+      const result = performMatrixOperation(type, matrixA, matrixB);
 
-        setResultHistory(prev => [{ type, matrixA, matrixB, result }, ...prev]);
-      } catch (err) {
-        setError({ message: err.message, type: err.name });
-        setTimeout(() => setError({ message: null, type: null }), 3000);
-      } finally {
-        setIsLoading(false);
-      }
-    }, 1000);
+      setResultHistory(prev => [{ type, matrixA, matrixB, result }, ...prev]);
+    } catch (err) {
+      setError({ message: err.message, type: err.name });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const resetAll = () => {
