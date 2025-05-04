@@ -20,7 +20,7 @@ export default function Home() {
   const {
     matrices, resultHistory, error, isLoading,
     handleMatrixChange, handleSwap, handleOperation,
-    resetAll, clearHistory, useAsMatrix, deleteHistoryItem, setIsLoading
+    resetAll, clearHistory, setMatrixFromHistory, deleteHistoryItem, setIsLoading
   } = useMatrixState();
 
   const { showSplash, showContent } = useSplashTransition();
@@ -87,9 +87,8 @@ export default function Home() {
               <ResultBox
                 history={resultHistory}
                 onClear={clearHistory}
-                onUseAsA={(matrix) => useAsMatrix(matrix, "matrixA")}
-                onUseAsB={(matrix) => useAsMatrix(matrix, "matrixB")}
-
+                onUseAsA={(matrix) => setMatrixFromHistory(matrix, "matrixA")}
+                onUseAsB={(matrix) => setMatrixFromHistory(matrix, "matrixB")}
                 onDelete={deleteHistoryItem}
               />
             </motion.div>
@@ -111,7 +110,7 @@ export default function Home() {
           <ErrorToast errorType={error.type} errorMessage={error.message} />
         )}
       </AnimatePresence>
-
+      
     </div>
 
 

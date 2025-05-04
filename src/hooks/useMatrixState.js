@@ -63,7 +63,7 @@ export function useMatrixState() {
   };
 
   const clearHistory = () => setResultHistory([]);
-  const useAsMatrix = (matrix, id) => setMatrices(prev => ({ ...prev, [id]: matrix }));
+  const setMatrixFromHistory = (matrix, id) => setMatrices(prev => ({ ...prev, [id]: matrix }));
   const deleteHistoryItem = (index) => setResultHistory(prev => prev.filter((_, i) => i !== index));
 
   return {
@@ -76,7 +76,7 @@ export function useMatrixState() {
     handleOperation,
     resetAll,
     clearHistory,
-    useAsMatrix,
+    setMatrixFromHistory,
     deleteHistoryItem,
     setIsLoading,
   };
