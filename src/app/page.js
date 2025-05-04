@@ -26,7 +26,7 @@ export default function Home() {
   const { showSplash, showContent } = useSplashTransition();
 
   return (
-    <div className="overflow-hidden relative flex flex-col min-h-screen justify-center w-full items-center pt-24 bg-black">
+    <div className="overflow-hidden relative flex flex-col min-h-screen justify-center w-full items-center pt-36 bg-black">
 
       <IsLoading isLoading={isLoading} />
       <SplachScreen showSplash={showSplash} />
