@@ -26,7 +26,7 @@ export default function Home() {
   const { showSplash, showContent } = useSplashTransition();
 
   return (
-    <div className="overflow-hidden relative flex flex-col min-h-screen justify-center w-full items-center pt-36 bg-black">
+    <div className="overflow-hidden relative flex flex-col min-h-screen justify-center w-full items-center pt-42 bg-black">
 
       <IsLoading isLoading={isLoading} />
       <SplachScreen showSplash={showSplash} />
@@ -96,12 +96,6 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <AnimatePresence>
-        {error.message && (
-          <ErrorToast errorType={error.type} errorMessage={error.message} />
-        )}
-      </AnimatePresence>
-
       <motion.footer
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -110,6 +104,12 @@ export default function Home() {
       >
         <Footer />
       </motion.footer>
+
+      <AnimatePresence>
+        {error.message && (
+          <ErrorToast errorType={error.type} errorMessage={error.message} />
+        )}
+      </AnimatePresence>
       
     </div>
 
