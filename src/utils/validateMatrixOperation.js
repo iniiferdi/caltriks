@@ -68,5 +68,11 @@ export function validateMatrixOperation(type, matrixA, matrixB) {
     }
   }
 
+  if (type === "rank" && !isMatrixFilled(matrixA)) {
+    const err = new Error("Matrix A is required for rank.");
+    err.name = "Matrix Validation";
+    throw err;
+  }
+
   return true;
 }

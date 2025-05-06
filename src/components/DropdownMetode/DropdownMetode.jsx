@@ -7,8 +7,15 @@ import { DropdownOption } from "./DropdownOption";
 const metodeList = [
     { value: "det", label: "Determinan" },
     { value: "trans", label: "Transpose" },
-    { value: "inv", label: "Invers" }
+    { value: "inv", label: "Invers" },
+    { value: "rank", label: "Rank" },
+    { value: "ref", label: "Eselon Baris" },
+    { value: "adj", label: "Adjoin" },
+    { value: "cof", label: "Cofactor" },
+    { value: "trace", label: "Trace" },
 ];
+
+
 
 export function DropdownMetode({ selected, onChange }) {
     const [isOpen, setIsOpen] = useState(false);

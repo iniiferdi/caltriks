@@ -1,4 +1,3 @@
-// hooks/useOCRMatrix.js
 import { useState, useRef } from "react";
 import Tesseract from "tesseract.js";
 
@@ -25,8 +24,10 @@ export function useOCRMatrix({ setIsLoading, onMatrixExtracted }) {
           canvas.width = newWidth;
           canvas.height = newHeight;
 
+          // Draw original image to canvas
           ctx.drawImage(img, 0, 0, newWidth, newHeight);
 
+          // Grayscale + thresholding
           const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
           const data = imageData.data;
 
@@ -52,22 +53,25 @@ export function useOCRMatrix({ setIsLoading, onMatrixExtracted }) {
       const base64Image = await processImage(imageFile);
 
       const result = await Tesseract.recognize(base64Image, "eng", {
-        tessedit_char_whitelist: "0123456789",
+        tessedit_char_whitelist: "0123456789-",
         tessedit_pageseg_mode: 6,
         oem: 3,
         logger: (m) => console.log("OCR:", m),
       });
 
       const text = result.data.text;
-      console.log("OCR Result:", text);
+      console.log("OCR Result (raw):", text);
 
-      const matrix = text
+      const cleanedText = normalizeOCRText(text);
+      console.log("Cleaned OCR:", cleanedText);
+
+      const matrix = cleanedText
         .split("\n")
         .map((line) =>
           line
             .trim()
             .split(/\s+/)
-            .filter((t) => /^\d+$/.test(t))
+            .filter((t) => /^-?\d+$/.test(t))
             .map(Number)
         )
         .filter((row) => row.length > 0);
@@ -91,3 +95,14 @@ export function useOCRMatrix({ setIsLoading, onMatrixExtracted }) {
     error,
   };
 }
+
+function normalizeOCRText(text) {
+  return text
+    .replace(/[oO]/g, "0")
+    .replace(/[^\d\-\s\n]/g, "")
+    .replace(/(\d)\s+-(\d)/g, "$1 -$2")
+    .replace(/[ ]+/g, " ")
+    .replace(/^[ \t]+|[ \t]+$/gm, "")
+    .trim();
+}
+
