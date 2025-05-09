@@ -20,8 +20,6 @@ export default function Home() {
     handleMatrixChange, handleSwap, handleOperation,
     resetAll, clearHistory, setMatrixFromHistory, deleteHistoryItem, setIsLoading
   } = useMatrixState();
-  
-  const { matrixA, matrixB } = matrices;  
 
   const { showSplash, showContent } = useSplashTransition();
 

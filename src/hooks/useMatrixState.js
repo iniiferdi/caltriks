@@ -16,19 +16,30 @@ export function useMatrixState() {
   const handleMatrixChange = (matrixId, row, col, valueOrMatrix) => {
     setMatrices(prev => {
       let newMatrix;
+  
       if (Array.isArray(valueOrMatrix)) {
         newMatrix = valueOrMatrix;
       } else {
-        newMatrix = prev[matrixId].map((r, rIdx) =>
-          r.map((c, cIdx) =>
-            rIdx === row && cIdx === col ? (valueOrMatrix === "" ? null : parseFloat(valueOrMatrix)) : c
-          )
-        );
+        const current = prev[matrixId] || [];
+        const updated = [...current];
+  
+        while (updated.length <= row) {
+          updated.push([]);
+        }
+  
+        while (updated[row].length <= col) {
+          updated[row].push(null);
+        }
+  
+        updated[row][col] = valueOrMatrix === "" ? null : parseFloat(valueOrMatrix);
+  
+        newMatrix = updated;
       }
+  
       return { ...prev, [matrixId]: newMatrix };
     });
   };
-
+  
   const handleSwap = () => {
     setMatrices(prev => ({ matrixA: prev.matrixB, matrixB: prev.matrixA }));
   };
@@ -55,7 +66,6 @@ export function useMatrixState() {
       }
     }, 1000);
   };
-
 
   const resetAll = () => {
     setMatrices(initialMatricesState);
