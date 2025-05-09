@@ -20,6 +20,8 @@ export default function Home() {
     handleMatrixChange, handleSwap, handleOperation,
     resetAll, clearHistory, setMatrixFromHistory, deleteHistoryItem, setIsLoading
   } = useMatrixState();
+  
+  const { matrixA, matrixB } = matrices;  
 
   const { showSplash, showContent } = useSplashTransition();
 
@@ -30,7 +32,7 @@ export default function Home() {
       <SplachScreen showSplash={showSplash} />
       <DotBackgroundDemo />
 
-      
+
 
       <AnimatePresence>
         {showContent && (
@@ -45,10 +47,10 @@ export default function Home() {
               <motion.div variants={fadeInUp}>
                 <MatriksPanel
                   title="Matrix A"
-                  matrixId="matrixA"
-                  matrix={matrices.matrixA}
-                  setIsLoading={setIsLoading}
+                  matrixId="A"
+                  matrix={matrixA}
                   onChange={handleMatrixChange}
+                  setIsLoading={setIsLoading}
                   onOperation={handleOperation}
                 />
               </motion.div>
@@ -64,10 +66,10 @@ export default function Home() {
               <motion.div variants={fadeInUp}>
                 <MatriksPanel
                   title="Matrix B"
-                  matrixId="matrixB"
-                  matrix={matrices.matrixB}
-                  setIsLoading={setIsLoading}
+                  matrixId="B"
+                  matrix={matrixB}
                   onChange={handleMatrixChange}
+                  setIsLoading={setIsLoading}
                   onOperation={handleOperation}
                 />
               </motion.div>
@@ -97,7 +99,7 @@ export default function Home() {
           <ErrorToast errorType={error.type} errorMessage={error.message} />
         )}
       </AnimatePresence>
-      
+
     </div>
 
 

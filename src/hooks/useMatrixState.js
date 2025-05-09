@@ -43,7 +43,7 @@ export function useMatrixState() {
         const matrixA = normalizeMatrix(rawA);
         const matrixB = normalizeMatrix(rawB);
 
-        validateMatrixOperation(type, matrixA, matrixB);
+        validateMatrixOperation(type, matrixA, matrixB); 
         const result = performMatrixOperation(type, matrixA, matrixB);
 
         setResultHistory(prev => [{ type, matrixA, matrixB, result }, ...prev]);
@@ -55,6 +55,7 @@ export function useMatrixState() {
       }
     }, 1000);
   };
+
 
   const resetAll = () => {
     setMatrices(initialMatricesState);

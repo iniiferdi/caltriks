@@ -19,10 +19,11 @@ export function validateMatrixOperation(type, matrixA, matrixB) {
       matrix.every(
         row =>
           Array.isArray(row) &&
-          row.every(cell => typeof cell === 'number' && !isNaN(cell))
+          row.every(cell => !isNaN(parseFloat(cell)))
       )
     );
   }
+  
 
   const { rows: rowsA, cols: colsA } = getValidDimensions(matrixA);
   const { rows: rowsB, cols: colsB } = getValidDimensions(matrixB);
@@ -33,26 +34,26 @@ export function validateMatrixOperation(type, matrixA, matrixB) {
     throw err;
   }
 
-  const isTwoMatrixOp = type === "add" || type === "sub" || type === "mul";
+  const isTwoMatrixOp = ["Add", "Subtract", "Multiply"].includes(type);
   if (isTwoMatrixOp && !isMatrixFilled(matrixB)) {
     const err = new Error("Matrix B is required.");
     err.name = "Matrix Validation";
     throw err;
   }
 
-  if ((type === "add" || type === "sub") && (rowsA !== rowsB || colsA !== colsB)) {
+  if (["Add", "Subtract"].includes(type) && (rowsA !== rowsB || colsA !== colsB)) {
     const err = new Error("Size mismatch.");
     err.name = "Operation Validation";
     throw err;
   }
 
-  if (type === "mul" && colsA !== rowsB) {
+  if (type === "Multiply" && colsA !== rowsB) {
     const err = new Error("Invalid size.");
     err.name = "Operation Validation";
     throw err;
   }
 
-  if (type === "det" || type === "inv") {
+  if (["Determinant", "Inverse"].includes(type)) {
     if (rowsA !== colsA) {
       const err = new Error("Square matrix required.");
       err.name = "Operation Validation";
@@ -60,7 +61,7 @@ export function validateMatrixOperation(type, matrixA, matrixB) {
     }
   }
 
-  if (type === "trans") {
+  if (type === "Transpose") {
     if (rowsA === 0 || colsA === 0) {
       const err = new Error("Matrix A is empty.");
       err.name = "Operation Validation";
@@ -68,7 +69,7 @@ export function validateMatrixOperation(type, matrixA, matrixB) {
     }
   }
 
-  if (type === "rank" && !isMatrixFilled(matrixA)) {
+  if (type === "Rank" && !isMatrixFilled(matrixA)) {
     const err = new Error("Matrix A is required for rank.");
     err.name = "Matrix Validation";
     throw err;
@@ -76,3 +77,4 @@ export function validateMatrixOperation(type, matrixA, matrixB) {
 
   return true;
 }
+

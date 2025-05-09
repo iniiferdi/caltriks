@@ -53,9 +53,12 @@ export function MatriksPanel({ title, matrixId, matrix, onChange, setIsLoading, 
         selected={method}
         onChange={(selectedMethod) => {
           setMethod(selectedMethod);
-          onOperation(selectedMethod);
+          onOperation(matrixId, selectedMethod); // ✅ Kirim ID dan jenis operasi
         }}
       />
+
+
+
 
     </div>
   );
