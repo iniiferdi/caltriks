@@ -4,11 +4,10 @@ export function useMatrixLocalState(matrix, matrixId, onChange) {
   const DEFAULT_ROWS = 3;
   const DEFAULT_COLS = 3;
 
-  const createEmptyMatrix = () =>
-    Array.from({ length: DEFAULT_ROWS }, () => Array(DEFAULT_COLS).fill(null));
-
   const [localMatrix, setLocalMatrix] = useState(() =>
-    matrix.length > 0 ? matrix : createEmptyMatrix()
+    matrix.length > 0
+      ? matrix
+      : Array.from({ length: DEFAULT_ROWS }, () => Array(DEFAULT_COLS).fill(null))
   );
 
   useEffect(() => {
@@ -22,13 +21,13 @@ export function useMatrixLocalState(matrix, matrixId, onChange) {
       )
     );
     setLocalMatrix(updated);
-    onChange(matrixId, rowIdx, colIdx, value);
+    onChange(matrixId, null, null, updated);
   };
 
   const handleClear = () => {
     const cleared = localMatrix.map(row => row.map(() => null));
     setLocalMatrix(cleared);
-    onChange(matrixId, null, null, cleared);
+    onChange(matrixId, null, null, []);
   };
 
   const handleAdd = () => {
@@ -62,7 +61,6 @@ export function useMatrixLocalState(matrix, matrixId, onChange) {
     setLocalMatrix(smallerMatrix);
     onChange(matrixId, null, null, smallerMatrix);
   };
-
 
   return {
     localMatrix,
