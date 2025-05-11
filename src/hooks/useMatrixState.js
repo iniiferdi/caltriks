@@ -1,6 +1,9 @@
-import { useState } from "react";
-import { normalizeMatrix, performMatrixOperation } from '@/utils/matrixUtils';
-import { validateMatrixOperation } from "@/utils/validateMatrixOperation";
+import { useState, useRef } from "react";
+import {
+  prepareMatrix,
+  getSingleMatrixTarget,
+} from "@/utils/matrixUtils";
+import { performMatrixOperation } from "@/utils/performMatrixOperation";
 
 const initialMatricesState = {
   matrixA: [],
@@ -12,59 +15,87 @@ export function useMatrixState() {
   const [resultHistory, setResultHistory] = useState([]);
   const [error, setError] = useState({ message: null, type: null });
   const [isLoading, setIsLoading] = useState(false);
+  const errorTimerRef = useRef(null);
+
+  const getMatrixKey = (id) => (id === "A" ? "matrixA" : "matrixB");
 
   const handleMatrixChange = (matrixId, row, col, valueOrMatrix) => {
-    setMatrices(prev => {
+    const key = getMatrixKey(matrixId);
+
+    setMatrices((prev) => {
       let newMatrix;
-  
+
       if (Array.isArray(valueOrMatrix)) {
         newMatrix = valueOrMatrix;
       } else {
-        const current = prev[matrixId] || [];
-        const updated = [...current];
-  
-        while (updated.length <= row) {
-          updated.push([]);
-        }
-  
-        while (updated[row].length <= col) {
-          updated[row].push(null);
-        }
-  
-        updated[row][col] = valueOrMatrix === "" ? null : parseFloat(valueOrMatrix);
-  
+        const updated = [...(prev[key] || [])];
+
+        while (updated.length <= row) updated.push([]);
+        while (updated[row].length <= col) updated[row].push(null);
+
+        const parsedValue = valueOrMatrix === "" ? null : parseFloat(valueOrMatrix);
+        updated[row][col] = isNaN(parsedValue) ? null : parsedValue;
+
         newMatrix = updated;
       }
-  
-      return { ...prev, [matrixId]: newMatrix };
+
+      return { ...prev, [key]: newMatrix };
     });
   };
-  
+
   const handleSwap = () => {
-    setMatrices(prev => ({ matrixA: prev.matrixB, matrixB: prev.matrixA }));
+    setMatrices((prev) => ({
+      matrixA: prev.matrixB,
+      matrixB: prev.matrixA,
+    }));
   };
 
-  const handleOperation = (type) => {
+  const handleOperation = async (typeInput) => {
+    const type = typeof typeInput === "string" ? typeInput : typeInput?.value;
     setIsLoading(true);
     setError({ message: null, type: null });
 
-    setTimeout(() => {
-      try {
-        const { matrixA: rawA, matrixB: rawB } = matrices;
-        const matrixA = normalizeMatrix(rawA);
-        const matrixB = normalizeMatrix(rawB);
+    try {
+      await new Promise((res) => setTimeout(res, 1000));
 
-        validateMatrixOperation(type, matrixA, matrixB); 
-        const result = performMatrixOperation(type, matrixA, matrixB);
+      const { matrixA: rawA, matrixB: rawB } = matrices;
+      const a = prepareMatrix(rawA);
+      const b = prepareMatrix(rawB);
 
-        setResultHistory(prev => [{ type, matrixA, matrixB, result }, ...prev]);
-      } catch (err) {
-        setError({ message: err.message, type: err.name });
-        setTimeout(() => setError({ message: null, type: null }), 3000);
-      } finally {
-        setIsLoading(false);
+      const result = performMatrixOperation(type, a, b);
+
+      const isSingleMatrixOp = ["det", "inv", "trans", "rank"].includes(type);
+
+      let newEntry;
+
+      if (isSingleMatrixOp) {
+        const { matrix, label } = getSingleMatrixTarget(a, b, rawA, rawB);
+        newEntry = {
+          type,
+          matrix,
+          label,
+          result,
+        };
+      } else {
+        newEntry = {
+          type,
+          matrixA: a,
+          matrixB: b,
+          result,
+        };
       }
-    }, 1000);
+
+      setResultHistory((prev) => [newEntry, ...prev]);
+    } catch (err) {
+      setError({ message: err.message, type: err.name });
+
+      if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
+      errorTimerRef.current = setTimeout(() => {
+        setError({ message: null, type: null });
+      }, 3000);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const resetAll = () => {
@@ -74,8 +105,10 @@ export function useMatrixState() {
   };
 
   const clearHistory = () => setResultHistory([]);
-  const setMatrixFromHistory = (matrix, id) => setMatrices(prev => ({ ...prev, [id]: matrix }));
-  const deleteHistoryItem = (index) => setResultHistory(prev => prev.filter((_, i) => i !== index));
+  const setMatrixFromHistory = (matrix, id) =>
+    setMatrices((prev) => ({ ...prev, [id]: matrix }));
+  const deleteHistoryItem = (index) =>
+    setResultHistory((prev) => prev.filter((_, i) => i !== index));
 
   return {
     matrices,

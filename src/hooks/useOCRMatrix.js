@@ -24,10 +24,8 @@ export function useOCRMatrix({ setIsLoading, onMatrixExtracted }) {
           canvas.width = newWidth;
           canvas.height = newHeight;
 
-          // Draw original image to canvas
           ctx.drawImage(img, 0, 0, newWidth, newHeight);
 
-          // Grayscale + thresholding
           const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
           const data = imageData.data;
 
@@ -56,14 +54,10 @@ export function useOCRMatrix({ setIsLoading, onMatrixExtracted }) {
         tessedit_char_whitelist: "0123456789-",
         tessedit_pageseg_mode: 6,
         oem: 3,
-        logger: (m) => console.log("OCR:", m),
       });
 
       const text = result.data.text;
-      console.log("OCR Result (raw):", text);
-
       const cleanedText = normalizeOCRText(text);
-      console.log("Cleaned OCR:", cleanedText);
 
       const matrix = cleanedText
         .split("\n")
@@ -81,8 +75,7 @@ export function useOCRMatrix({ setIsLoading, onMatrixExtracted }) {
       } else {
         onMatrixExtracted(matrix);
       }
-    } catch (err) {
-      console.error("OCR error:", err);
+    } catch {
       setError("OCR gagal.");
     } finally {
       setIsLoading(false);
@@ -105,4 +98,3 @@ function normalizeOCRText(text) {
     .replace(/^[ \t]+|[ \t]+$/gm, "")
     .trim();
 }
-

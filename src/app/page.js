@@ -11,26 +11,32 @@ import { ErrorToast } from "@/components/Animate/ErrorToast";
 
 import { useMatrixState } from "@/hooks/useMatrixState";
 import { useSplashTransition } from "@/hooks/useSplashTransition";
-
 import { fadeInUp, containerStagger } from "@/utils/animations";
 
 export default function Home() {
   const {
-    matrices, resultHistory, error, isLoading,
-    handleMatrixChange, handleSwap, handleOperation,
-    resetAll, clearHistory, setMatrixFromHistory, deleteHistoryItem, setIsLoading
+    matrices,
+    resultHistory,
+    error,
+    isLoading,
+    handleMatrixChange,
+    handleSwap,
+    handleOperation,
+    resetAll,
+    clearHistory,
+    setMatrixFromHistory,
+    deleteHistoryItem,
+    setIsLoading,
   } = useMatrixState();
 
+  const { matrixA, matrixB } = matrices;
   const { showSplash, showContent } = useSplashTransition();
 
   return (
     <div className="overflow-hidden relative flex flex-col min-h-screen justify-center w-full items-center py-36 bg-black">
-
       <IsLoading isLoading={isLoading} />
       <SplachScreen showSplash={showSplash} />
       <DotBackgroundDemo />
-
-
 
       <AnimatePresence>
         {showContent && (
@@ -97,9 +103,6 @@ export default function Home() {
           <ErrorToast errorType={error.type} errorMessage={error.message} />
         )}
       </AnimatePresence>
-
     </div>
-
-
   );
 }

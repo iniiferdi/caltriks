@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { DropdownOption } from "./DropdownOption";
@@ -9,21 +7,18 @@ const metodeList = [
     { value: "trans", label: "Transpose" },
     { value: "inv", label: "Invers" },
     { value: "rank", label: "Rank" },
-    { value: "ref", label: "Eselon Baris" },
-    { value: "adj", label: "Adjoin" },
-    { value: "cof", label: "Cofactor" },
-    { value: "trace", label: "Trace" },
 ];
 
-
-
-export function DropdownMetode({ selected, onChange }) {
+export function DropdownMetode({ selected, onChange, matrixId, onMatrixChange }) {
     const [isOpen, setIsOpen] = useState(false);
 
-    const handleSelect = (method) => {
+    const handleSelect = (value) => {
         setIsOpen(false);
-        onChange?.(method.value);
+        onChange?.(value);
+        onMatrixChange(matrixId, value);
+        console.log(`Selected method: ${value} on Matrix: ${matrixId}`);
     };
+
     const selectedLabel = metodeList.find((m) => m.value === selected)?.label || "Select Method";
 
     return (
@@ -57,7 +52,8 @@ export function DropdownMetode({ selected, onChange }) {
                             <DropdownOption
                                 key={method.value}
                                 label={method.label}
-                                onSelect={() => handleSelect(method)}
+                                value={method.value}
+                                onSelect={() => handleSelect(method.value)}
                             />
                         ))}
                     </motion.div>

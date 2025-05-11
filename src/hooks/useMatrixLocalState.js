@@ -4,10 +4,11 @@ export function useMatrixLocalState(matrix, matrixId, onChange) {
   const DEFAULT_ROWS = 3;
   const DEFAULT_COLS = 3;
 
+  const createEmptyMatrix = () =>
+    Array.from({ length: DEFAULT_ROWS }, () => Array(DEFAULT_COLS).fill(null));
+
   const [localMatrix, setLocalMatrix] = useState(() =>
-    matrix.length > 0
-      ? matrix
-      : Array.from({ length: DEFAULT_ROWS }, () => Array(DEFAULT_COLS).fill(null))
+    matrix.length > 0 ? matrix : createEmptyMatrix()
   );
 
   useEffect(() => {
@@ -21,28 +22,47 @@ export function useMatrixLocalState(matrix, matrixId, onChange) {
       )
     );
     setLocalMatrix(updated);
-    onChange(matrixId, null, null, updated);
+    onChange(matrixId, rowIdx, colIdx, value);
   };
 
   const handleClear = () => {
     const cleared = localMatrix.map(row => row.map(() => null));
     setLocalMatrix(cleared);
-    onChange(matrixId, null, null, []);
+    onChange(matrixId, null, null, cleared);
   };
 
   const handleAdd = () => {
-    const newMatrix = [...localMatrix.map(row => [...row, null])];
-    newMatrix.push(new Array(newMatrix[0].length).fill(null));
+    const rowCount = localMatrix.length;
+    const colCount = localMatrix[0]?.length || 0;
+
+    if (rowCount >= 4 || colCount >= 4) return;
+
+    const extendedRows = localMatrix.map(row => [...row, null]);
+    const newRow = new Array(colCount + 1).fill(null);
+    const newMatrix = [...extendedRows, newRow];
+
     setLocalMatrix(newMatrix);
+    onChange(matrixId, null, null, newMatrix);
   };
 
+
   const handleRemove = () => {
-    if (localMatrix.length <= 1 || localMatrix[0].length <= 1) return;
+    const rows = localMatrix.length;
+    const cols = localMatrix[0]?.length || 0;
+
+    if (rows <= 2 && cols <= 2) return;
+
+    const newRows = Math.max(2, rows - 1);
+    const newCols = Math.max(2, cols - 1);
+
     const smallerMatrix = localMatrix
-      .slice(0, localMatrix.length - 1)
-      .map(row => row.slice(0, row.length - 1));
+      .slice(0, newRows)
+      .map(row => row.slice(0, newCols));
+
     setLocalMatrix(smallerMatrix);
+    onChange(matrixId, null, null, smallerMatrix);
   };
+
 
   return {
     localMatrix,

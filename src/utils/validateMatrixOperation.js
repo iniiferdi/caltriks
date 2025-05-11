@@ -1,69 +1,103 @@
-export function validateMatrixOperation(type, matrixA, matrixB) {
-  const normalizeType = (t) => t?.toLowerCase?.();
+import { isValidMatrix, getSingleMatrixTarget } from './matrixUtils';
 
-  const isMatrixFilled = matrix =>
-    Array.isArray(matrix) &&
-    matrix.length > 0 &&
-    matrix.every(
-      row =>
-        Array.isArray(row) &&
-        row.every(cell => !isNaN(parseFloat(cell)))
-    );
+export function validateMatrixOperation(type, matrixA = [], matrixB = []) {
+  const isNumber = (val) => !isNaN(parseFloat(val)) && isFinite(val);
 
-  const getValidDimensions = matrix => {
-    const filteredRows = matrix.filter(
-      row =>
-        Array.isArray(row) &&
-        row.every(cell => !isNaN(parseFloat(cell)))
-    );
-    return {
-      rows: filteredRows.length,
-      cols: Math.max(...filteredRows.map(r => r.length), 0),
-    };
+  const getDimensions = (matrix) => {
+    if (!Array.isArray(matrix) || matrix.length === 0) return { rows: 0, cols: 0 };
+
+    let rows = 0;
+    let cols = 0;
+
+    for (const row of matrix) {
+      if (Array.isArray(row)) {
+        rows++;
+        const validLength = row.reduceRight((found, val, i) =>
+          isNumber(val) && found === -1 ? i + 1 : found,
+          -1
+        );
+        if (validLength > cols) cols = validLength;
+      }
+    }
+
+    return { rows, cols };
   };
 
-  const throwError = (message, name = "Operation Validation") => {
+  const throwError = (message, name = "Validation Error") => {
     const err = new Error(message);
     err.name = name;
     throw err;
   };
 
-  const opType = normalizeType(type);
+  const opType = typeof type === "string" ? type : type?.value;
+  if (!opType) throwError("Operation type is missing or invalid.", "Type Validation");
 
-  if (!isMatrixFilled(matrixA)) {
-    throwError("Matrix A is required.", "Matrix Validation");
+  const binaryOperations = ["add", "sub", "mul"];
+
+  const targetMatrix = !binaryOperations.includes(opType)
+    ? getSingleMatrixTarget(matrixA, matrixB)
+    : null;
+
+  let rowsA = 0, colsA = 0, rowsB = 0, colsB = 0;
+
+  if (binaryOperations.includes(opType)) {
+    if (!isValidMatrix(matrixA)) throwError("Matrix A must be valid.", "Matrix Validation");
+    if (!isValidMatrix(matrixB)) throwError("Matrix B must be valid.", "Matrix Validation");
+
+    ({ rows: rowsA, cols: colsA } = getDimensions(matrixA));
+    ({ rows: rowsB, cols: colsB } = getDimensions(matrixB));
+  } else {
+    if (!targetMatrix) {
+      throwError("A valid matrix (A or B) is required for this operation.", "Matrix Validation");
+    }
   }
 
-  const { rows: rowsA, cols: colsA } = getValidDimensions(matrixA);
-  const { rows: rowsB, cols: colsB } = getValidDimensions(matrixB || []);
+  const targetMatrixData = targetMatrix && targetMatrix.matrix ? targetMatrix.matrix : targetMatrix;
 
-  switch (opType) {
-    case "add":
-    case "subtract":
-      if (!isMatrixFilled(matrixB)) throwError("Matrix B is required.", "Matrix Validation");
-      if (rowsA !== rowsB || colsA !== colsB) throwError("Size mismatch.");
-      break;
+  const { rows: targetRows, cols: targetCols } = targetMatrixData && targetMatrixData.length > 0
+    ? getDimensions(targetMatrixData)
+    : { rows: 0, cols: 0 };
 
-    case "multiply":
-      if (!isMatrixFilled(matrixB)) throwError("Matrix B is required.", "Matrix Validation");
-      if (colsA !== rowsB) throwError("Invalid size.");
-      break;
+  const validators = {
+    add: () => {
+      if (rowsA !== rowsB || colsA !== colsB) {
+        throwError("Matrix dimensions must match for addition.");
+      }
+    },
+    sub: () => {
+      if (rowsA !== rowsB || colsA !== colsB) {
+        throwError("Matrix dimensions must match for subtraction.");
+      }
+    },
+    mul: () => {
+      if (colsA !== rowsB) {
+        throwError("Matrix A's columns must match Matrix B's rows for multiplication.");
+      }
+    },
+    det: () => {
+      if (targetRows !== targetCols) {
+        throwError("Matrix must be square for determinant.");
+      }
+    },
+    inv: () => {
+      if (targetRows !== targetCols) {
+        throwError("Matrix must be square for inverse.");
+      }
+    },
+    trans: () => {
+      if (targetRows === 0 || targetCols === 0) {
+        throwError("Matrix is empty and cannot be transposed.");
+      }
+    },
+    rank: () => {
+    },
+  };
 
-    case "determinant":
-    case "inverse":
-      if (rowsA !== colsA) throwError("Square matrix required.");
-      break;
-
-    case "transpose":
-      if (rowsA === 0 || colsA === 0) throwError("Matrix A is empty.");
-      break;
-
-    case "rank":
-      break;
-
-    default:
-      throwError("Unknown operation type.", "Type Validation");
+  if (!validators[opType]) {
+    throwError(`Unknown matrix operation type: ${opType}`, "Type Validation");
   }
+
+  validators[opType]();
 
   return true;
 }
