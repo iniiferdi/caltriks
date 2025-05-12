@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 export function useMatrixLocalState(matrix, matrixId, onChange) {
   const DEFAULT_ROWS = 3;
   const DEFAULT_COLS = 3;
-
+  
   const [localMatrix, setLocalMatrix] = useState(() =>
     matrix.length > 0
       ? matrix
