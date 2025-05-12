@@ -10,6 +10,7 @@
 - Perkalian matriks
 - Transpos matriks
 - Determinan
+- Invers
 - Rank
 - Ekstraksi matriks dari gambar menggunakan OCR (Tesseract.js)
 
