@@ -30,7 +30,7 @@
 Jalankan perintah berikut untuk menjalankan secara lokal:
 
 ```bash
-git clone https://github.com/username/calltricks.git
+git clone https://github.com/iniiferdi/calltricks.git
 cd calltricks
 npm install
 npm run dev
