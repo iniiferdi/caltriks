@@ -8,7 +8,6 @@ import { MatrixImageUploader } from "@/components/MatrixImageUploader/MatrixImag
 
 export function MatriksPanel({ title, matrixId, matrix, onChange, setIsLoading, onOperation }) {
     const [method, setMethod] = useState("");
-    const [activeMatrix, setActiveMatrix] = useState(matrixId);
 
     const {
         localMatrix,
@@ -18,11 +17,6 @@ export function MatriksPanel({ title, matrixId, matrix, onChange, setIsLoading, 
         handleAdd,
         handleRemove,
     } = useMatrixLocalState(matrix, matrixId, onChange);
-
-    const handleMatrixChange = (matrixId, selectedMethod) => {
-        setActiveMatrix(matrixId);
-        onOperation(selectedMethod, matrixId);
-    };
 
     return (
         <div className="flex gap-8 flex-col hover-target pointer-events-auto">
@@ -54,10 +48,12 @@ export function MatriksPanel({ title, matrixId, matrix, onChange, setIsLoading, 
 
             <DropdownMetode
                 selected={method}
-                onChange={(selectedMethod) => setMethod(selectedMethod)}
-                matrixId={matrixId}
-                onMatrixChange={handleMatrixChange}
+                onChange={(selectedMethod) => {
+                    setMethod(selectedMethod);
+                    onOperation(selectedMethod, matrixId);
+                }}
             />
+
         </div>
     );
 }

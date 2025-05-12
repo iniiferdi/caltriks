@@ -50,53 +50,60 @@ export function useMatrixState() {
     }));
   };
 
-  const handleOperation = async (typeInput) => {
-    const type = typeof typeInput === "string" ? typeInput : typeInput?.value;
-    setIsLoading(true);
-    setError({ message: null, type: null });
+  const handleOperation = async (typeInput, matrixId) => {
+  const type = typeof typeInput === "string" ? typeInput : typeInput?.value;
+  setIsLoading(true);
+  setError({ message: null, type: null });
 
-    try {
-      await new Promise((res) => setTimeout(res, 1000));
+  try {
+    await new Promise((res) => setTimeout(res, 1000));
 
-      const { matrixA: rawA, matrixB: rawB } = matrices;
-      const a = prepareMatrix(rawA);
-      const b = prepareMatrix(rawB);
+    const isSingleMatrixOp = ["det", "inv", "trans", "rank"].includes(type);
 
-      const result = performMatrixOperation(type, a, b);
+    const rawA = matrices.matrixA;
+    const rawB = matrices.matrixB;
 
-      const isSingleMatrixOp = ["det", "inv", "trans", "rank"].includes(type);
+    const a = prepareMatrix(rawA);
+    const b = prepareMatrix(rawB);
 
-      let newEntry;
+    let result;
+    let newEntry;
 
-      if (isSingleMatrixOp) {
-        const { matrix, label } = getSingleMatrixTarget(a, b, rawA, rawB);
-        newEntry = {
-          type,
-          matrix,
-          label,
-          result,
-        };
-      } else {
-        newEntry = {
-          type,
-          matrixA: a,
-          matrixB: b,
-          result,
-        };
-      }
+    if (isSingleMatrixOp) {
+      const selectedMatrix =
+        matrixId === "B" ? b :
+        matrixId === "A" ? a :
+        (() => { throw new Error("Invalid matrixId"); })();
 
-      setResultHistory((prev) => [newEntry, ...prev]);
-    } catch (err) {
-      setError({ message: err.message, type: err.name });
-
-      if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
-      errorTimerRef.current = setTimeout(() => {
-        setError({ message: null, type: null });
-      }, 3000);
-    } finally {
-      setIsLoading(false);
+      result = performMatrixOperation(type, selectedMatrix);
+      newEntry = {
+        type,
+        matrix: selectedMatrix,
+        label: matrixId,
+        result,
+      };
+    } else {
+      result = performMatrixOperation(type, a, b);
+      newEntry = {
+        type,
+        matrixA: a,
+        matrixB: b,
+        result,
+      };
     }
-  };
+
+    setResultHistory((prev) => [newEntry, ...prev]);
+  } catch (err) {
+    setError({ message: err.message, type: err.name });
+    if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
+    errorTimerRef.current = setTimeout(() => {
+      setError({ message: null, type: null });
+    }, 3000);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   const resetAll = () => {
     setMatrices(initialMatricesState);
