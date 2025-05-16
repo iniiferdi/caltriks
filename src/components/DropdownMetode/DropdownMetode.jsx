@@ -7,6 +7,7 @@ const metodeList = [
     { value: "trans", label: "Transpose" },
     { value: "inv", label: "Invers" },
     { value: "rank", label: "Rank" },
+    { value: "cofactor", label: "Cofactor" },
     { value: "scalar", label: "Scalar" },
 ];
 

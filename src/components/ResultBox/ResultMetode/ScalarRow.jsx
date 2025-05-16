@@ -1,4 +1,4 @@
-import { MatrixDisplay } from "./MatriksDisplay";
+import { MatrixDisplay } from "../MatriksDisplay";
 import { getEffectiveOrder } from "@/utils/matrixUtils";
 
 export function ScalarRow({ index, label, matrix, scalar, result }) {

@@ -1,5 +1,5 @@
-import { MatrixDisplay } from "./MatriksDisplay";
-import { Operator } from "./Operator";
+import { MatrixDisplay } from "../MatriksDisplay";
+import { Operator } from "../Operator";
 import { getEffectiveOrder } from "@/utils/matrixUtils";
 
 export function BasicOperationRow({ index, entry }) {

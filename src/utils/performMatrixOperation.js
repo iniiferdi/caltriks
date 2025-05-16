@@ -14,6 +14,7 @@ import {
   prepareMatrix,
   isValidMatrix,
 } from './matrixUtils';
+import {getCofactorMatrix} from './LogicMatriks'
 
 const binaryOperations = ['add', 'sub', 'mul'];
 
@@ -64,6 +65,9 @@ export const performMatrixOperation = (
       return targetMatrix.map(row =>
         row.map(cell => (cell ?? 0) * scalarValue)
       );
+    case 'cofactor':
+      return getCofactorMatrix(targetMatrix);
+
     default:
       throw new Error('Unknown operation type.');
   }

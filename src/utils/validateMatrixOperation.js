@@ -105,6 +105,12 @@ export function validateMatrixOperation(type, matrixA = [], matrixB = []) {
         throwError("Matrix is empty.", "Matrix Validation");
       }
     },
+    cofactor: () => {
+      if (targetRows !== targetCols) {
+        throwError("Matrix must be square.", "Matrix Validation");
+      }
+    },
+
 
   };
 

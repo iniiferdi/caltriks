@@ -57,7 +57,7 @@ export function useMatrixState() {
   try {
     await new Promise((res) => setTimeout(res, 1000));
 
-    const isSingleMatrixOp = ["det", "inv", "trans", "rank", "scalar"].includes(type);
+    const isSingleMatrixOp = ["det", "inv", "trans", "rank", "scalar", "cofactor"].includes(type);
 
     const rawA = matrices.matrixA;
     const rawB = matrices.matrixB;
