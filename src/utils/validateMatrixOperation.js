@@ -38,7 +38,7 @@ export function validateMatrixOperation(type, matrixA = [], matrixB = []) {
   const isMatrixBValid = isValidMatrix(matrixB);
 
   if (!isMatrixAValid && !isMatrixBValid) {
-    throwError("At least one matrix must contain numbers.", "Matrix Validation");
+    throwError("Matrix A or B must contain valid numbers.", "Matrix Validation");
   }
 
   let targetMatrix = null;
@@ -46,7 +46,7 @@ export function validateMatrixOperation(type, matrixA = [], matrixB = []) {
   if (!binaryOperations.includes(opType)) {
     const candidate = getSingleMatrixTarget(matrixA, matrixB);
     if (!candidate || !candidate.matrix || !isValidMatrix(candidate.matrix)) {
-      throwError("A valid matrix (A or B) is required for this operation.", "Matrix Validation");
+      throwError("Provide a valid matrix for this operation.", "Matrix Validation");
     }
     targetMatrix = candidate.matrix;
   }
@@ -58,52 +58,58 @@ export function validateMatrixOperation(type, matrixA = [], matrixB = []) {
   const validators = {
     add: () => {
       if (!isMatrixAValid || !isMatrixBValid) {
-        throwError("Both matrices must be valid for addition.", "Matrix Validation");
+        throwError("Both matrices must be valid.", "Matrix Validation");
       }
       if (rowsA !== rowsB || colsA !== colsB) {
-        throwError("Matrix dimensions must match for addition.", "Matrix Validation");
+        throwError("Matrix dimensions must match.", "Matrix Validation");
       }
     },
     sub: () => {
       if (!isMatrixAValid || !isMatrixBValid) {
-        throwError("Both matrices must be valid for subtraction.", "Matrix Validation");
+        throwError("Both matrices must be valid.", "Matrix Validation");
       }
       if (rowsA !== rowsB || colsA !== colsB) {
-        throwError("Matrix dimensions must match for subtraction.", "Matrix Validation");
+        throwError("Matrix dimensions must match.", "Matrix Validation");
       }
     },
     mul: () => {
       if (!isMatrixAValid || !isMatrixBValid) {
-        throwError("Both matrices must be valid for multiplication.", "Matrix Validation");
+        throwError("Both matrices must be valid.", "Matrix Validation");
       }
       if (colsA !== rowsB) {
-        throwError("Matrix A's columns must match Matrix B's rows for multiplication.", "Matrix Validation");
+        throwError("Columns of A must match rows of B.", "Matrix Validation");
       }
     },
     det: () => {
       if (targetRows !== targetCols) {
-        throwError("Matrix must be square for determinant.", "Matrix Validation");
+        throwError("Matrix must be square.", "Matrix Validation");
       }
     },
     inv: () => {
       if (targetRows !== targetCols) {
-        throwError("Matrix must be square for inverse.", "Matrix Validation");
+        throwError("Matrix must be square.", "Matrix Validation");
       }
     },
     trans: () => {
       if (targetRows === 0 || targetCols === 0) {
-        throwError("Matrix is empty and cannot be transposed.", "Matrix Validation");
+        throwError("Matrix is empty.", "Matrix Validation");
       }
     },
     rank: () => {
       if (targetRows === 0 || targetCols === 0) {
-        throwError("Matrix is empty and cannot be ranked.", "Matrix Validation");
+        throwError("Matrix is empty.", "Matrix Validation");
       }
     },
+    scalar: () => {
+      if (targetRows === 0 || targetCols === 0) {
+        throwError("Matrix is empty.", "Matrix Validation");
+      }
+    },
+
   };
 
   if (!validators[opType]) {
-    throwError(`Unknown matrix operation type: ${opType}`, "Type Validation");
+    throwError(`Unsupported operation type: ${opType}`, "Type Validation");
   }
 
   validators[opType]();

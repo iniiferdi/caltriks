@@ -48,11 +48,12 @@ export function MatriksPanel({ title, matrixId, matrix, onChange, setIsLoading, 
 
             <DropdownMetode
                 selected={method}
-                onChange={(selectedMethod) => {
-                    setMethod(selectedMethod);
-                    onOperation(selectedMethod, matrixId);
+                onChange={({ value, scalar }) => {
+                    setMethod(value);
+                    onOperation(value, matrixId, scalar);
                 }}
             />
+
 
         </div>
     );

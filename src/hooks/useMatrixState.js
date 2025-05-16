@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
 import {
   prepareMatrix,
-  getSingleMatrixTarget,
 } from "@/utils/matrixUtils";
 import { performMatrixOperation } from "@/utils/performMatrixOperation";
 
@@ -50,7 +49,7 @@ export function useMatrixState() {
     }));
   };
 
-  const handleOperation = async (typeInput, matrixId) => {
+  const handleOperation = async (typeInput, matrixId, scalar) => {
   const type = typeof typeInput === "string" ? typeInput : typeInput?.value;
   setIsLoading(true);
   setError({ message: null, type: null });
@@ -58,7 +57,7 @@ export function useMatrixState() {
   try {
     await new Promise((res) => setTimeout(res, 1000));
 
-    const isSingleMatrixOp = ["det", "inv", "trans", "rank"].includes(type);
+    const isSingleMatrixOp = ["det", "inv", "trans", "rank", "scalar"].includes(type);
 
     const rawA = matrices.matrixA;
     const rawB = matrices.matrixB;
@@ -75,9 +74,11 @@ export function useMatrixState() {
         matrixId === "A" ? a :
         (() => { throw new Error("Invalid matrixId"); })();
 
-      result = performMatrixOperation(type, selectedMatrix);
+      result = performMatrixOperation(type, selectedMatrix, null, scalar);
+
       newEntry = {
         type,
+        scalar: type === "scalar" ? scalar : undefined,
         matrix: selectedMatrix,
         label: matrixId,
         result,
@@ -103,6 +104,8 @@ export function useMatrixState() {
     setIsLoading(false);
   }
 };
+
+
 
 
   const resetAll = () => {

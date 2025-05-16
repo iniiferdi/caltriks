@@ -7,15 +7,17 @@ const metodeList = [
     { value: "trans", label: "Transpose" },
     { value: "inv", label: "Invers" },
     { value: "rank", label: "Rank" },
+    { value: "scalar", label: "Scalar" },
 ];
 
 export function DropdownMetode({ selected, onChange }) {
     const [isOpen, setIsOpen] = useState(false);
 
-    const handleSelect = (value) => {
+    const handleSelect = (value, scalar = null) => {
         setIsOpen(false);
-        onChange?.(value);
+        onChange?.({ value, scalar });
     };
+
 
     const selectedLabel = metodeList.find((m) => m.value === selected)?.label || "Select Method";
 
@@ -50,8 +52,9 @@ export function DropdownMetode({ selected, onChange }) {
                                 key={method.value}
                                 label={method.label}
                                 value={method.value}
-                                onSelect={() => handleSelect(method.value)}
+                                onSelect={handleSelect}
                             />
+
                         ))}
                     </motion.div>
                 )}

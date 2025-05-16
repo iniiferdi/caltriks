@@ -1,5 +1,5 @@
 export const fadeInUp = {
-  hidden: { opacity: 0, y: 20 }, // blur dihapus
+  hidden: { opacity: 0, y: 20 },
   show: {
     opacity: 1,
     y: 0,
@@ -14,7 +14,7 @@ export const containerStagger = {
   hidden: {},
   show: {
     transition: {
-      staggerChildren: 0.1, // lebih cepat
+      staggerChildren: 0.1,
     },
   },
 };

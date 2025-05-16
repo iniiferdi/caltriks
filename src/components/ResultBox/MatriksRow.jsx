@@ -3,6 +3,7 @@ import { DeterminantRow } from "./DeterminanRow";
 import { TransposeRow } from "./TransposeRow";
 import { BasicOperationRow } from "./BasicOperationRow";
 import { RankRow } from "./RankRow";
+import { ScalarRow } from "./ScalarRow"; // 🆕
 
 export function MatrixRow({ index, entry }) {
   switch (entry.type) {
@@ -14,8 +15,17 @@ export function MatrixRow({ index, entry }) {
       return <InverseRow index={index} matrix={entry.matrix} label={entry.label} result={entry.result} />;
     case 'rank':
       return <RankRow index={index} matrix={entry.matrix} label={entry.label} result={entry.result} />;
+    case 'scalar':
+      return (
+        <ScalarRow
+          index={index}
+          matrix={entry.matrix}
+          label={entry.label}
+          scalar={entry.scalar}
+          result={entry.result}
+        />
+      );
     default:
       return <BasicOperationRow index={index} entry={entry} />;
   }
 }
-
