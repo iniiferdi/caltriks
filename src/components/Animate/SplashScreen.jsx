@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 
-export function SplachScreen({showSplash}){
+export function SplashScreen({showSplash}){
     return(
         <AnimatePresence>
         {showSplash && (

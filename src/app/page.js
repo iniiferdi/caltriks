@@ -12,7 +12,6 @@ import { ErrorToast } from "@/components/Animate/ErrorToast";
 import { useMatrixState } from "@/hooks/useMatrixState";
 import { useSplashTransition } from "@/hooks/useSplashTransition";
 import { fadeInUp, containerStagger } from "@/utils/animations";
-import { SidebarMenu } from "@/components/SidebarMenu/SidebarMenu";
 
 export default function Home() {
   const {
