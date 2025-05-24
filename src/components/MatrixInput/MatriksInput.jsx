@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { InputField } from './InputField';
 
-export function MatriksInput({ matrix, onChange, matrixId }) {
+export function MatriksInput({ matrix, onChange, matrixId}) {
     const columnCount = matrix?.[0]?.length || 1;
 
     return (
@@ -31,4 +31,3 @@ export function MatriksInput({ matrix, onChange, matrixId }) {
         </div>
     );
 }
-

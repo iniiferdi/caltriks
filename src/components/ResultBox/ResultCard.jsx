@@ -18,8 +18,8 @@ export function ResultCard({ entry, index, onUseAsA, onUseAsB, onDelete }) {
       <DropdownMenu
         open={open}
         setOpen={setOpen}
-        onUseAsA={() => onUseAsA(entry)}
-        onUseAsB={() => onUseAsB(entry)}
+        onUseAsA={() => onUseAsA(entry.rawResult)}
+        onUseAsB={() => onUseAsB(entry.rawResult)}
         onDelete={() => onDelete(index)}
       />
       <MatrixRow index={index} entry={entry} />

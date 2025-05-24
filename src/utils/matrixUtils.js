@@ -1,3 +1,11 @@
+import { fraction } from "mathjs";
+
+/**
+ * Mengecek apakah sebuah matriks valid:
+ * - array of array
+ * - ada isi
+ * - ada nilai numerik selain kosong/null
+ */
 export const isValidMatrix = (matrix) =>
   Array.isArray(matrix) &&
   matrix.length > 0 &&
@@ -19,13 +27,19 @@ export const getSingleMatrixTarget = (A, B) => {
 
 export const cleanMatrix = (matrix) =>
   matrix.map(row =>
-    row.map(cell =>
-      typeof cell === 'number' ? cell : parseFloat(cell) || 0
-    )
+    row.map(cell => {
+      if (cell === "" || cell === null) return 0;
+      const parsed = typeof cell === "number" ? cell : parseFloat(cell);
+      if (isNaN(parsed)) return 0;
+      return Number.isInteger(parsed) ? parsed : fraction(parsed);
+    })
   );
 
 export const normalizeMatrix = (matrix) => {
-  const filteredRows = matrix.filter(row => row.some(cell => cell !== null && cell !== ''));
+  const filteredRows = matrix.filter(row =>
+    row.some(cell => cell !== null && cell !== "")
+  );
+
   const maxCols = Math.max(
     0,
     ...filteredRows.map(row => {
@@ -34,6 +48,7 @@ export const normalizeMatrix = (matrix) => {
       return i;
     })
   );
+
   return filteredRows.map(row => row.slice(0, maxCols));
 };
 
@@ -44,4 +59,3 @@ export const getEffectiveOrder = (matrix) => {
   const cols = Math.max(...matrix.map(row => row.length));
   return { rows, cols };
 };
-

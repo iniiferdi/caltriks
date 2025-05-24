@@ -1,9 +1,10 @@
-export function InputField({ value, onChange }) {
-  const displayValue = value === null || value === undefined ? "" : value;
+export function InputField({ value, onChange}) {
+  const displayValue = value ?? "";
 
   return (
     <input
-      type="number"
+      type="text"
+      inputMode="decimal"
       value={displayValue}
       onChange={onChange}
       className="appearance-none 

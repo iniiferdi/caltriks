@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Divide, Sigma, FunctionSquare, Asterisk, BarChart, Percent } from "lucide-react";
+import { Divide, Sigma, FunctionSquare, Asterisk, LayoutGrid,  BarChart, Percent } from "lucide-react";
 
 const icons = {
   Determinan: <FunctionSquare className="w-4 h-4 mr-2" />,

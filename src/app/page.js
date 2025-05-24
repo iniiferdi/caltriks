@@ -5,7 +5,7 @@ import { DotBackgroundDemo } from "@/components/BackgroundDots";
 import { MatriksPanel } from "@/components/MatrixPanel/MatriksPanel";
 import { MatriksOperations } from "@/components/MatrixOperations/MatriksOperations";
 import { ResultBox } from "@/components/ResultBox/Resultbox";
-import { SplachScreen } from "@/components/Animate/SplashScreen";
+import { SplashScreen } from "@/components/Animate/SplashScreen";
 import { IsLoading } from "@/components/Animate/IsLoading";
 import { ErrorToast } from "@/components/Animate/ErrorToast";
 
@@ -35,14 +35,21 @@ export default function Home() {
   return (
     <div className="overflow-hidden relative flex flex-col min-h-screen justify-center w-full items-center py-36 bg-black">
       <IsLoading isLoading={isLoading} />
-      <SplachScreen showSplash={showSplash} />
+      <SplashScreen showSplash={showSplash} />
       <DotBackgroundDemo />
 
       <AnimatePresence>
         {showContent && (
-          <>
+          <motion.div
+            key="main-content"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
+            className="w-full flex flex-col items-center justify-center"
+          >
             <motion.div
-              className="flex xl:flex-row justify-between items-center w-full relative max-w-5xl flex-col gap-12 p-12 xl:p-0"
+              className="flex xl:flex-row justify-between items-center mx-auto w-full relative max-w-5xl flex-col gap-12 p-12 xl:p-0"
               variants={containerStagger}
               initial="hidden"
               animate="show"
@@ -94,7 +101,7 @@ export default function Home() {
                 onDelete={deleteHistoryItem}
               />
             </motion.div>
-          </>
+          </motion.div>
         )}
       </AnimatePresence>
 

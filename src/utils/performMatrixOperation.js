@@ -6,15 +6,24 @@ import {
   transpose,
   inv,
   fraction,
-  format,
 } from 'mathjs';
 import rref from 'rref';
+
 import { validateMatrixOperation } from './validateMatrixOperation';
 import {
   prepareMatrix,
   isValidMatrix,
 } from './matrixUtils';
-import {getCofactorMatrix} from './LogicMatriks'
+import { getCofactorMatrix } from './LogicMatriks';
+
+const convertToFractionMatrix = (matrix) => {
+  return matrix.map(row =>
+    row.map(cell => {
+      const frac = fraction(cell);
+      return frac.d === 1 ? frac.n : frac.toFraction(true);
+    })
+  );
+};
 
 const binaryOperations = ['add', 'sub', 'mul'];
 
@@ -22,7 +31,7 @@ export const performMatrixOperation = (
   type,
   matrixA = [],
   matrixB = [],
-  scalarValue = null
+  scalarValue = null,
 ) => {
   validateMatrixOperation(type, matrixA, matrixB);
 
@@ -35,22 +44,17 @@ export const performMatrixOperation = (
 
   switch (type) {
     case 'add':
-      return add(A, B);
+      return convertToFractionMatrix(add(A, B));
     case 'sub':
-      return subtract(A, B);
+      return convertToFractionMatrix(subtract(A, B));
     case 'mul':
-      return multiply(A, B);
+      return convertToFractionMatrix(multiply(A, B));
     case 'det':
       return Number(det(targetMatrix).toFixed(4));
     case 'trans':
-      return transpose(targetMatrix);
+      return convertToFractionMatrix(transpose(targetMatrix));
     case 'inv':
-      try {
-        const result = inv(targetMatrix);
-        return result.map(row => row.map(x => format(fraction(x))));
-      } catch {
-        throw new Error('Matrix not invertible. Must be square with det ≠ 0.');
-      }
+      return convertToFractionMatrix(inv(targetMatrix));
     case 'rank':
       try {
         const reduced = rref(targetMatrix);
@@ -62,14 +66,15 @@ export const performMatrixOperation = (
       if (scalarValue == null || isNaN(scalarValue)) {
         throw new Error('Nilai skalar tidak valid.');
       }
-      return targetMatrix.map(row =>
-        row.map(cell => (cell ?? 0) * scalarValue)
+      return convertToFractionMatrix(
+        targetMatrix.map(row =>
+          row.map(cell => (cell ?? 0) * scalarValue)
+        )
       );
     case 'cofactor':
-      return getCofactorMatrix(targetMatrix);
+      return convertToFractionMatrix(getCofactorMatrix(targetMatrix));
 
     default:
       throw new Error('Unknown operation type.');
   }
 };
-

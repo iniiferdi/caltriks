@@ -26,3 +26,25 @@ export function getCofactorMatrix(mat) {
 
     return cofactorMatrix;
 }
+
+export const getMinrorMatriks = (matrix, row, col) => {
+  const n = matrix.length;
+
+  if (!Array.isArray(matrix) || matrix.some(r => r.length !== n)) {
+    throw new Error('Matrix must be square.');
+  }
+
+  if (
+    row < 0 || row >= n ||
+    col < 0 || col >= n
+  ) {
+    throw new Error('Invalid row or column index.');
+  }
+
+  const minorMatrix = matrix
+    .filter((_, i) => i !== row)
+    .map(r => r.filter((_, j) => j !== col));
+
+  return Number(det(minorMatrix).toFixed(4));
+};
+

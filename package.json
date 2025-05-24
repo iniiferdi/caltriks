@@ -9,10 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google/genai": "^0.15.0",
+    "@google/generative-ai": "^0.24.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "fraction.js": "^5.2.2",
     "framer-motion": "^12.9.2",
     "image-js": "^0.37.0",
+    "jsonrepair": "^3.12.0",
     "lucide-react": "^0.503.0",
     "mathjs": "^14.4.0",
     "motion": "^12.9.2",

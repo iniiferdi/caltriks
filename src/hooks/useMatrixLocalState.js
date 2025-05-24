@@ -3,22 +3,24 @@ import { useEffect, useState } from "react";
 export function useMatrixLocalState(matrix, matrixId, onChange) {
   const DEFAULT_ROWS = 3;
   const DEFAULT_COLS = 3;
-  
-  const [localMatrix, setLocalMatrix] = useState(() =>
+
+  const initializeMatrix = () =>
     matrix.length > 0
       ? matrix
-      : Array.from({ length: DEFAULT_ROWS }, () => Array(DEFAULT_COLS).fill(null))
-  );
+      : Array.from({ length: DEFAULT_ROWS }, () =>
+          Array(DEFAULT_COLS).fill(null)
+        );
+
+  const [localMatrix, setLocalMatrix] = useState(initializeMatrix);
 
   useEffect(() => {
     if (matrix.length > 0) setLocalMatrix(matrix);
   }, [matrix]);
 
   const handleChange = (rowIdx, colIdx, value) => {
+    const newValue = value === "" ? null : isNaN(value) ? value : parseFloat(value);
     const updated = localMatrix.map((row, r) =>
-      row.map((cell, c) =>
-        r === rowIdx && c === colIdx ? (value === "" ? null : parseFloat(value)) : cell
-      )
+      row.map((cell, c) => (r === rowIdx && c === colIdx ? newValue : cell))
     );
     setLocalMatrix(updated);
     onChange(matrixId, null, null, updated);
@@ -27,7 +29,7 @@ export function useMatrixLocalState(matrix, matrixId, onChange) {
   const handleClear = () => {
     const cleared = localMatrix.map(row => row.map(() => null));
     setLocalMatrix(cleared);
-    onChange(matrixId, null, null, []);
+    onChange(matrixId, null, null, cleared);
   };
 
   const handleAdd = () => {
@@ -36,30 +38,28 @@ export function useMatrixLocalState(matrix, matrixId, onChange) {
 
     if (rowCount >= 4 || colCount >= 4) return;
 
-    const extendedRows = localMatrix.map(row => [...row, null]);
-    const newRow = new Array(colCount + 1).fill(null);
-    const newMatrix = [...extendedRows, newRow];
+    const newMatrix = localMatrix.map(row => [...row, null]);
+    newMatrix.push(new Array(colCount + 1).fill(null));
 
     setLocalMatrix(newMatrix);
     onChange(matrixId, null, null, newMatrix);
   };
 
-
   const handleRemove = () => {
-    const rows = localMatrix.length;
-    const cols = localMatrix[0]?.length || 0;
+    const rowCount = localMatrix.length;
+    const colCount = localMatrix[0]?.length || 0;
 
-    if (rows <= 2 && cols <= 2) return;
+    if (rowCount <= 2 && colCount <= 2) return;
 
-    const newRows = Math.max(2, rows - 1);
-    const newCols = Math.max(2, cols - 1);
+    const newRowCount = Math.max(2, rowCount - 1);
+    const newColCount = Math.max(2, colCount - 1);
 
-    const smallerMatrix = localMatrix
-      .slice(0, newRows)
-      .map(row => row.slice(0, newCols));
+    const newMatrix = localMatrix
+      .slice(0, newRowCount)
+      .map(row => row.slice(0, newColCount));
 
-    setLocalMatrix(smallerMatrix);
-    onChange(matrixId, null, null, smallerMatrix);
+    setLocalMatrix(newMatrix);
+    onChange(matrixId, null, null, newMatrix);
   };
 
   return {

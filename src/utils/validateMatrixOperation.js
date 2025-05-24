@@ -110,8 +110,6 @@ export function validateMatrixOperation(type, matrixA = [], matrixB = []) {
         throwError("Matrix must be square.", "Matrix Validation");
       }
     },
-
-
   };
 
   if (!validators[opType]) {

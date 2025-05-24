@@ -24,6 +24,7 @@ export function MatriksPanel({ title, matrixId, matrix, onChange, setIsLoading, 
                 shadow-lg shadow-[rgba(0,0,0,0.25)] border border-[#1E1E20] 
                 transform transition-all duration-300 ease-in-out 
                 hover:scale-[1.02] hover:shadow-2xl hover:shadow-[rgba(0,0,0,0.35)] hover:border-[#3E3E40]">
+                
                 <HeaderCard
                     title={title}
                     onClear={handleClear}
@@ -53,8 +54,6 @@ export function MatriksPanel({ title, matrixId, matrix, onChange, setIsLoading, 
                     onOperation(value, matrixId, scalar);
                 }}
             />
-
-
         </div>
     );
 }

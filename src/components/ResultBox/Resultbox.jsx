@@ -9,6 +9,8 @@ export function ResultBox({ history, onClear, onUseAsA, onUseAsB, onDelete }) {
   const isEmpty = history.length === 0;
   const containerRef = useRef(null);
 
+  
+
   useEffect(() => {
     if (!isEmpty && containerRef.current) {
       containerRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -20,9 +22,8 @@ export function ResultBox({ history, onClear, onUseAsA, onUseAsB, onDelete }) {
       <div className="flex justify-between items-center">
         <h2 className="text-white text-lg font-semibold">Result</h2>
         <button
-          className={`text-sm font-medium cursor-pointer hover:underline transition ${
-            isEmpty ? "text-gray-500 cursor-not-allowed hover:no-underline" : "text-white"
-          }`}
+          className={`text-sm font-medium cursor-pointer hover:underline transition ${isEmpty ? "text-gray-500 cursor-not-allowed hover:no-underline" : "text-white"
+            }`}
           onClick={() => !isEmpty && onClear()}
           disabled={isEmpty}
         >
@@ -40,8 +41,9 @@ export function ResultBox({ history, onClear, onUseAsA, onUseAsB, onDelete }) {
                 key={i}
                 index={i}
                 entry={entry}
-                onUseAsA={() => onUseAsA(entry.result)}
-                onUseAsB={() => onUseAsB(entry.result)}
+                onUseAsA={() => onUseAsA(entry.rawResult)}
+                onUseAsB={() => onUseAsB(entry.rawResult)}
+
                 onDelete={() => onDelete(i)}
               />
             ))
