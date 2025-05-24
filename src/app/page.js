@@ -12,6 +12,7 @@ import { ErrorToast } from "@/components/Animate/ErrorToast";
 import { useMatrixState } from "@/hooks/useMatrixState";
 import { useSplashTransition } from "@/hooks/useSplashTransition";
 import { fadeInUp, containerStagger } from "@/utils/animations";
+import { SidebarMenu } from "@/components/SidebarMenu/SidebarMenu";
 
 export default function Home() {
   const {
@@ -34,6 +35,7 @@ export default function Home() {
 
   return (
     <div className="overflow-hidden relative flex flex-col min-h-screen justify-center w-full items-center py-36 bg-black">
+      
       <IsLoading isLoading={isLoading} />
       <SplashScreen showSplash={showSplash} />
       <DotBackgroundDemo />
