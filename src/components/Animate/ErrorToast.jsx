@@ -7,7 +7,7 @@ export const ErrorToast = ({ errorType, errorMessage }) => (
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: 50 }}
     transition={{ duration: 0.3 }}
-    className="fixed bottom-16 left-1/2 -translate-x-1/2 z-50 inline-block max-w-[90%] sm:max-w-xl bg-[#121212] shadow-[rgba(0,0,0,0.25)] border border-[#1E1E20] text-white rounded-lg shadow-lg p-3"
+    className="fixed bottom-16 left-1/2 -translate-x-1/2 z-50 inline-block max-w-[90%] sm:max-w-xl bg-[rgba(128,120,120,0.03)] backdrop-blur-[118.2px]  shadow-[rgba(0,0,0,0.25)] border border-[#1E1E20]  text-white rounded-lg shadow-lg p-3"
   >
     <div className="flex items-start gap-2">
       <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />

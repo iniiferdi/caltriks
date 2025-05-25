@@ -1,5 +1,7 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import { AnimatePresence, motion } from "framer-motion";
 import { DotBackgroundDemo } from "@/components/BackgroundDots";
 import { MatriksPanel } from "@/components/MatrixPanel/MatriksPanel";
@@ -29,12 +31,13 @@ export default function Home() {
     setIsLoading,
   } = useMatrixState();
 
+  const router = useRouter();
+
   const { matrixA, matrixB } = matrices;
   const { showSplash, showContent } = useSplashTransition();
 
   return (
     <div className="overflow-hidden relative flex flex-col min-h-screen justify-center w-full items-center py-36 bg-black">
-      
       <IsLoading isLoading={isLoading} />
       <SplashScreen showSplash={showSplash} />
       <DotBackgroundDemo />
@@ -102,6 +105,19 @@ export default function Home() {
                 onDelete={deleteHistoryItem}
               />
             </motion.div>
+            <motion.div
+              className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-[#1E1E20]/80 text-white text-sm px-3 py-2 rounded-full shadow-lg shadow-[rgba(0,0,0,0.25)] border-2 border-[#1E1E20] hover:bg-neutral-800 transition-all cursor-pointer backdrop-blur-sm"
+              variants={fadeInUp}
+              initial="hidden"
+              animate="show"
+              exit="hidden"
+              onClick={() => router.push('/splc')}
+            >
+              <span className="font-medium tracking-tight">SplCalc</span>
+              <span className="text-[10px] bg-[#cc9622] text-white px-1.5 py-0.5 items-center text-center rounded-sm">Beta</span>
+            </motion.div>
+
+
           </motion.div>
         )}
       </AnimatePresence>

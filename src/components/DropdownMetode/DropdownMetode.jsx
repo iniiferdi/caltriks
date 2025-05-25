@@ -29,7 +29,7 @@ export function DropdownMetode({ selected, onChange }) {
             onMouseLeave={() => setIsOpen(false)}
         >
             <div
-                className="w-full bg-[rgba(128,120,120,0.03)] backdrop-blur-[118.2px] flex justify-between items-center border border-[#1E1E20] text-white font-semibold py-3 px-4 rounded-full text-center cursor-pointer"
+                className="w-full bg-[rgba(128,120,120,0.03)] backdrop-blur-[118.2px] flex justify-between items-center border-2 border-[#1E1E20] text-white font-semibold py-3 px-4 rounded-full text-center cursor-pointer"
             >
                 {selectedLabel}
                 <div>
@@ -46,7 +46,7 @@ export function DropdownMetode({ selected, onChange }) {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -5 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute mt-2 w-full bg-[rgba(128,120,120,0.03)] backdrop-blur-[118.2px] border border-[#1E1E20] rounded-xl shadow-md z-10"
+                        className="absolute mt-2 w-full bg-[rgba(128,120,120,0.03)] backdrop-blur-[118.2px] border-2 border-[#1E1E20] rounded-xl shadow-md z-10"
                     >
                         {metodeList.map((method) => (
                             <DropdownOption
