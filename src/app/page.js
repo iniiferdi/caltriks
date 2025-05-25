@@ -106,7 +106,7 @@ export default function Home() {
               />
             </motion.div>
             <motion.div
-              className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-[#1E1E20]/80 text-white text-sm px-3 py-2 rounded-full shadow-lg shadow-[rgba(0,0,0,0.25)] border-2 border-[#1E1E20] hover:bg-neutral-800 transition-all cursor-pointer backdrop-blur-sm"
+              className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-[#1E1E20]/80 text-white text-sm px-3 py-2 rounded-full shadow-lg shadow-[rgba(0,0,0,0.25)] border-2 border-[#1E1E20] hover:bg-neutral-800 transition-all cursor-pointer backdrop-blur-sm"
               variants={fadeInUp}
               initial="hidden"
               animate="show"
