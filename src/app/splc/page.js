@@ -5,74 +5,111 @@ import { create, all } from 'mathjs';
 import { DotBackgroundDemo } from '@/components/BackgroundDots';
 import EquationForm from '@/components/SPL/EquationForm/EquationForm';
 import MethodSelector from '@/components/SPL/MethodSelector/MethodSelector';
+import ResultBox from '@/components/SPL/ResultBox/ResultBox';
 
 const math = create(all);
 
 export default function SplcPage() {
-    const [variableCount, setVariableCount] = useState(3);
-   
-    const [inputs, setInputs] = useState(
-        Array.from({ length: 3 }, () => Array(4).fill(''))
-    );
-     console.log(inputs)
-    const [selectedLabel, setSelectedLabel] = useState("Solve by Gaussian elimination");
+  const [variableCount, setVariableCount] = useState(3);
+  const [inputs, setInputs] = useState(Array.from({ length: 3 }, () => Array(4).fill('')));
+  const [selectedLabel, setSelectedLabel] = useState("Solve by Gaussian elimination");
+  const [result, setResult] = useState(null);
+  const [resultType, setResultType] = useState('success');
 
-    const handleClear = () => {
-        setInputs(Array.from({ length: variableCount }, () => Array(variableCount + 1).fill('')));
-    };
+  console.log(result)
 
-    const handleAdd = () => {
-        const newCount = variableCount + 1;
-        setVariableCount(newCount);
-        setInputs(Array.from({ length: newCount }, () => Array(newCount + 1).fill('')));
-    };
+  const handleClear = () => {
+    setInputs(Array.from({ length: variableCount }, () => Array(variableCount + 1).fill('')));
+    setResult(null);
+  };
 
-    const handleRemove = () => {
-        if (variableCount <= 1) return;
-        const newCount = variableCount - 1;
-        setVariableCount(newCount);
-        setInputs(Array.from({ length: newCount }, () => Array(newCount + 1).fill('')));
-    };
+  const handleAdd = () => {
+    const newCount = variableCount + 1;
+    setVariableCount(newCount);
+    setInputs(Array.from({ length: newCount }, () => Array(newCount + 1).fill('')));
+    setResult(null);
+  };
 
-    const handleInputChange = (row, col, value) => {
-        const updated = [...inputs];
-        updated[row][col] = value;
-        setInputs(updated);
-    };
+  const handleRemove = () => {
+    if (variableCount <= 1) return;
+    const newCount = variableCount - 1;
+    setVariableCount(newCount);
+    setInputs(Array.from({ length: newCount }, () => Array(newCount + 1).fill('')));
+    setResult(null);
+  };
 
-    const handleSolve = () => {
-        try {
-            const A = inputs.map(row => row.slice(0, variableCount).map(val => parseFloat(val)));
-            const b = inputs.map(row => parseFloat(row[variableCount]));
+  const handleInputChange = (row, col, value) => {
+    const updated = [...inputs];
+    updated[row][col] = value;
+    setInputs(updated);
+  };
 
-            const matrixA = math.matrix(A);
-            const vectorB = math.matrix(b);
+  const gaussianEliminationFinalResult = (inputMatrix) => {
+    const m = inputMatrix.length;
+    const matrix = inputMatrix.map(row => row.map(cell => math.parse(cell || '0')));
 
-            const solution = math.lusolve(matrixA, vectorB);
-            alert(`Solution: ${solution.map(s => s[0]).join(', ')}`);
-        } catch (error) {
-            alert('Invalid matrix or unsolvable system');
+    for (let i = 0; i < m; i++) {
+      const pivot = matrix[i][i];
+      matrix[i] = matrix[i].map(cell => math.simplify(`(${cell}) / (${pivot})`));
+
+      for (let j = 0; j < m; j++) {
+        if (j !== i) {
+          const factor = matrix[j][i];
+          matrix[j] = matrix[j].map((cell, k) =>
+            math.simplify(`(${cell}) - (${factor}) * (${matrix[i][k]})`)
+          );
         }
-    };
+      }
+    }
 
-    return (
-        <div className="relative flex min-h-screen w-full items-center justify-center bg-black py-36 overflow-hidden">
-            <DotBackgroundDemo />
-            <div className="flex flex-col gap-8 items-center pointer-events-auto w-full max-w-fit px-4 text-white">
-                <EquationForm
-                    variableCount={variableCount}
-                    inputs={inputs}
-                    onClear={handleClear}
-                    onAdd={handleAdd}
-                    onRemove={handleRemove}
-                    onInputChange={handleInputChange}
-                />
-                <MethodSelector
-                    selectedLabel={selectedLabel}
-                    setSelectedLabel={setSelectedLabel}
-                    onSolve={handleSolve}
-                />
-            </div>
-        </div>
-    );
+    return matrix.map(row => row.map(cell => math.simplify(cell).toString()));
+  };
+
+  const handleSolve = () => {
+    try {
+      const augmented = inputs.map(row => row.map(cell => cell || '0'));
+      let finalMatrix;
+
+      switch (selectedLabel) {
+        case "Solve by Gaussian elimination":
+        case "Solve by Gauss–Jordan elimination":
+          finalMatrix = gaussianEliminationFinalResult(augmented);
+          break;
+        default:
+          throw new Error("Metode belum didukung.");
+      }
+
+      // Simpan dalam format array of array
+      setResult(finalMatrix);
+      setResultType('success');
+    } catch (error) {
+      console.error(error);
+      setResult(error.message || 'Terjadi kesalahan.');
+      setResultType('error');
+    }
+  };
+
+  return (
+    <div className="relative flex min-h-screen w-full items-center justify-center bg-black py-36 overflow-hidden">
+      <DotBackgroundDemo />
+      <div className="flex flex-col gap-8 items-center pointer-events-auto w-full max-w-fit px-4 text-white">
+        <EquationForm
+          variableCount={variableCount}
+          inputs={inputs}
+          onClear={handleClear}
+          onAdd={handleAdd}
+          onRemove={handleRemove}
+          onInputChange={handleInputChange}
+        />
+        <MethodSelector
+          selectedLabel={selectedLabel}
+          setSelectedLabel={setSelectedLabel}
+          onSolve={handleSolve}
+        />
+        
+          <ResultBox result={result} type={resultType} />
+    
+      </div>
+    </div>
+  );
 }

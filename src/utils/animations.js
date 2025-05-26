@@ -18,3 +18,15 @@ export const containerStagger = {
     },
   },
 };
+
+export const fadeOnly = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      duration: 0.8,
+      ease: 'easeInOut',
+    },
+  },
+};
+

@@ -1,8 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-
 import { AnimatePresence, motion } from "framer-motion";
+
 import { DotBackgroundDemo } from "@/components/BackgroundDots";
 import { MatriksPanel } from "@/components/MatrixPanel/MatriksPanel";
 import { MatriksOperations } from "@/components/MatrixOperations/MatriksOperations";
@@ -13,7 +13,20 @@ import { ErrorToast } from "@/components/Animate/ErrorToast";
 
 import { useMatrixState } from "@/hooks/useMatrixState";
 import { useSplashTransition } from "@/hooks/useSplashTransition";
-import { fadeInUp, containerStagger } from "@/utils/animations";
+
+import { containerStagger } from "@/utils/animations";
+
+const FadeInSection = ({ children, delay = 0 }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 40 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: 40 }}
+    transition={{ duration: 0.8, ease: "easeInOut", delay }}
+  >
+    {children}
+  </motion.div>
+);
+
 
 export default function Home() {
   const {
@@ -32,7 +45,6 @@ export default function Home() {
   } = useMatrixState();
 
   const router = useRouter();
-
   const { matrixA, matrixB } = matrices;
   const { showSplash, showContent } = useSplashTransition();
 
@@ -42,24 +54,25 @@ export default function Home() {
       <SplashScreen showSplash={showSplash} />
       <DotBackgroundDemo />
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {showContent && (
           <motion.div
             key="main-content"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            transition={{ duration: 1.2, ease: "easeInOut" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1, ease: "easeInOut" }}
             className="w-full flex flex-col items-center justify-center"
           >
+            {/* Matrix Panels and Operation */}
             <motion.div
-              className="flex xl:flex-row justify-between items-center mx-auto w-full relative max-w-5xl flex-col gap-12 p-12 xl:p-0"
+              className="flex xl:flex-row justify-between items-center mx-auto w-full max-w-5xl flex-col gap-12 p-12 xl:p-0"
               variants={containerStagger}
               initial="hidden"
               animate="show"
               exit="hidden"
             >
-              <motion.div variants={fadeInUp}>
+              <FadeInSection delay={0.1}>
                 <MatriksPanel
                   title="Matrix A"
                   matrixId="A"
@@ -68,17 +81,17 @@ export default function Home() {
                   setIsLoading={setIsLoading}
                   onOperation={handleOperation}
                 />
-              </motion.div>
+              </FadeInSection>
 
-              <motion.div variants={fadeInUp}>
+              <FadeInSection delay={0.2}>
                 <MatriksOperations
                   onSwap={handleSwap}
                   onOperate={handleOperation}
                   onReset={resetAll}
                 />
-              </motion.div>
+              </FadeInSection>
 
-              <motion.div variants={fadeInUp}>
+              <FadeInSection delay={0.3}>
                 <MatriksPanel
                   title="Matrix B"
                   matrixId="B"
@@ -87,41 +100,47 @@ export default function Home() {
                   setIsLoading={setIsLoading}
                   onOperation={handleOperation}
                 />
-              </motion.div>
+              </FadeInSection>
             </motion.div>
 
+            {/* Result Box */}
+            <FadeInSection delay={0.5}>
+              <div className="w-full mx-auto max-w-5xl p-12 xl:p-0">
+                <ResultBox
+                  history={resultHistory}
+                  onClear={clearHistory}
+                  onUseAsA={(matrix) => setMatrixFromHistory(matrix, "matrixA")}
+                  onUseAsB={(matrix) => setMatrixFromHistory(matrix, "matrixB")}
+                  onDelete={deleteHistoryItem}
+                />
+              </div>
+            </FadeInSection>
+
             <motion.div
-              className="w-full mx-auto relative max-w-5xl p-12 xl:p-0"
-              variants={fadeInUp}
-              initial="hidden"
-              animate="show"
-              exit="hidden"
-            >
-              <ResultBox
-                history={resultHistory}
-                onClear={clearHistory}
-                onUseAsA={(matrix) => setMatrixFromHistory(matrix, "matrixA")}
-                onUseAsB={(matrix) => setMatrixFromHistory(matrix, "matrixB")}
-                onDelete={deleteHistoryItem}
-              />
-            </motion.div>
-            <motion.div
-              className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-[#1E1E20]/80 text-white text-sm px-3 py-2 rounded-full shadow-lg shadow-[rgba(0,0,0,0.25)] border-2 border-[#1E1E20] hover:bg-neutral-800 transition-all cursor-pointer backdrop-blur-sm"
-              variants={fadeInUp}
-              initial="hidden"
-              animate="show"
-              exit="hidden"
+              initial={{ opacity: 0, y: -20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.95 }}
+              transition={{
+                duration: 0.6,
+                delay: 1,
+                ease: [0.25, 0.8, 0.25, 1] // easeInOutQuint
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+              className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-[#1E1E20]/80 text-white text-sm px-3 py-2 rounded-full shadow-lg shadow-[rgba(0,0,0,0.25)] border border-[#1E1E20] transition-all duration-500 ease-in-out cursor-pointer backdrop-blur-sm hover:bg-neutral-800"
               onClick={() => router.push('/splc')}
             >
               <span className="font-medium tracking-tight">SplCalc</span>
-              <span className="text-[10px] bg-[#cc9622] text-white px-1.5 py-0.5 items-center text-center rounded-sm">Beta</span>
+              <span className="text-[10px] bg-[#cc9622] text-white px-1.5 py-0.5 rounded-sm">
+                Beta
+              </span>
             </motion.div>
-
 
           </motion.div>
         )}
       </AnimatePresence>
 
+      {/* Error Toast */}
       <AnimatePresence>
         {error.message && (
           <ErrorToast errorType={error.type} errorMessage={error.message} />

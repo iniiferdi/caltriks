@@ -48,3 +48,6 @@ export const getMinrorMatriks = (matrix, row, col) => {
   return Number(det(minorMatrix).toFixed(4));
 };
 
+
+
+
