@@ -14,9 +14,8 @@ export default function SplcPage() {
   const [inputs, setInputs] = useState(Array.from({ length: 3 }, () => Array(4).fill('')));
   const [selectedLabel, setSelectedLabel] = useState("Solve by Gaussian elimination");
   const [result, setResult] = useState(null);
-  const [resultType, setResultType] = useState('success');
 
-  console.log(result)
+  console.log(inputs)
 
   const handleClear = () => {
     setInputs(Array.from({ length: variableCount }, () => Array(variableCount + 1).fill('')));
@@ -79,13 +78,10 @@ export default function SplcPage() {
           throw new Error("Metode belum didukung.");
       }
 
-      // Simpan dalam format array of array
       setResult(finalMatrix);
-      setResultType('success');
     } catch (error) {
       console.error(error);
       setResult(error.message || 'Terjadi kesalahan.');
-      setResultType('error');
     }
   };
 
@@ -107,7 +103,7 @@ export default function SplcPage() {
           onSolve={handleSolve}
         />
         
-          <ResultBox result={result} type={resultType} />
+          <ResultBox result={result}  inputMatrix={inputs}/>
     
       </div>
     </div>
