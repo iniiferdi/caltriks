@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Divide, Sigma, FunctionSquare, Asterisk, BarChart, Percent } from "lucide-react";
+import { Divide, Sigma, FunctionSquare, Asterisk, BarChart, Percent, Rows3 } from "lucide-react";
 
 const icons = {
   Determinan: <FunctionSquare className="w-4 h-4 mr-2" />,
@@ -9,6 +9,7 @@ const icons = {
   Invers: <Sigma className="w-4 h-4 mr-2" />,
   Rank: <BarChart className="w-4 h-4 mr-2" />,
   Cofactor: <Asterisk className="w-4 h-4 mr-2" />,
+  "Echelon Form": <Rows3 className="w-4 h-4 mr-2" />,
   Scalar: <Percent className="w-4 h-4 mr-2" />,
 };
 

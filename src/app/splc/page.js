@@ -102,9 +102,14 @@ export default function SplcPage() {
           setSelectedLabel={setSelectedLabel}
           onSolve={handleSolve}
         />
-        
-          <ResultBox result={result}  inputMatrix={inputs}/>
-    
+
+        <ResultBox
+          result={result}
+          inputMatrix={inputs}
+          label={selectedLabel}
+        />
+
+
       </div>
     </div>
   );

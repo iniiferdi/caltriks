@@ -14,7 +14,7 @@ import {
   prepareMatrix,
   isValidMatrix,
 } from './matrixUtils';
-import { getCofactorMatrix } from './LogicMatriks';
+import { getCofactorMatrix, refFraction } from './LogicMatriks';
 
 const convertToFractionMatrix = (matrix) => {
   return matrix.map(row =>
@@ -73,6 +73,16 @@ export const performMatrixOperation = (
       );
     case 'cofactor':
       return convertToFractionMatrix(getCofactorMatrix(targetMatrix));
+    case 'echelon':
+  try {
+    const refMatrix = refFraction(targetMatrix); // pakai pecahan
+    return convertToFractionMatrix(refMatrix);   // tampilkan bentuk 
+  } catch {
+    throw new Error('Failed to compute row echelon form. Invalid matrix.');
+  }
+
+
+
 
     default:
       throw new Error('Unknown operation type.');

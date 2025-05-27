@@ -79,9 +79,9 @@ export function useMatrixState() {
     clearError();
 
     try {
-      await delay(1000); // Simulate async
+      await delay(1000);
 
-      const singleMatrixOps = ["det", "inv", "trans", "rank", "scalar", "cofactor"];
+      const singleMatrixOps = ["det", "inv", "trans", "rank", "scalar", "cofactor", "echelon"];
       const isSingleOp = singleMatrixOps.includes(type);
 
       const a = prepareMatrix(matrices.matrixA);

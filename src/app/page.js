@@ -62,7 +62,7 @@ export default function Home() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1, ease: "easeInOut" }}
-            className="w-full flex flex-col items-center justify-center"
+            className="w-full flex flex-col"
           >
             {/* Matrix Panels and Operation */}
             <motion.div
@@ -105,7 +105,7 @@ export default function Home() {
 
             {/* Result Box */}
             <FadeInSection delay={0.5}>
-              <div className="w-full mx-auto max-w-5xl p-12 xl:p-0">
+              <div className="w-full relative mx-auto max-w-5xl p-12 xl:p-0">
                 <ResultBox
                   history={resultHistory}
                   onClear={clearHistory}
