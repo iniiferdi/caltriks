@@ -74,16 +74,12 @@ export const performMatrixOperation = (
     case 'cofactor':
       return convertToFractionMatrix(getCofactorMatrix(targetMatrix));
     case 'echelon':
-  try {
-    const refMatrix = refFraction(targetMatrix); // pakai pecahan
-    return convertToFractionMatrix(refMatrix);   // tampilkan bentuk 
-  } catch {
-    throw new Error('Failed to compute row echelon form. Invalid matrix.');
-  }
-
-
-
-
+      try {
+        const refMatrix = refFraction(targetMatrix);
+        return convertToFractionMatrix(refMatrix);
+      } catch {
+        throw new Error('Failed to compute row echelon form. Invalid matrix.');
+      }
     default:
       throw new Error('Unknown operation type.');
   }

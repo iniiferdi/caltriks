@@ -14,9 +14,10 @@ export function MatrixRow({ index, entry }) {
     matrix: entry.matrix,
     label: entry.label,
     result: entry.result,
+    type: entry.type,
   };
 
-  console.log(entry.result)
+  console.log("MatrixRow entry:", entry);
 
   switch (entry.type) {
     case 'det':
@@ -24,7 +25,7 @@ export function MatrixRow({ index, entry }) {
     case 'trans':
       return <TransposeRow {...commonProps} />;
     case 'inv':
-      return <InverseRow {...commonProps} stepsByMethod={entry.stepsByMethod} />;
+      return <InverseRow {...commonProps}/>;
     case 'rank':
       return <RankRow {...commonProps} />;
     case 'scalar':

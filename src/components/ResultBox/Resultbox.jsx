@@ -43,7 +43,6 @@ export function ResultBox({ history, onClear, onUseAsA, onUseAsB, onDelete }) {
                 entry={entry}
                 onUseAsA={() => onUseAsA(entry.rawResult)}
                 onUseAsB={() => onUseAsB(entry.rawResult)}
-
                 onDelete={() => onDelete(i)}
               />
             ))

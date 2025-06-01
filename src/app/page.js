@@ -27,7 +27,6 @@ const FadeInSection = ({ children, delay = 0 }) => (
   </motion.div>
 );
 
-
 export default function Home() {
   const {
     matrices,
@@ -64,7 +63,7 @@ export default function Home() {
             transition={{ duration: 1, ease: "easeInOut" }}
             className="w-full flex flex-col"
           >
-            {/* Matrix Panels and Operation */}
+ 
             <motion.div
               className="flex xl:flex-row justify-between items-center mx-auto w-full max-w-5xl flex-col gap-12 p-12 xl:p-0"
               variants={containerStagger}
@@ -103,7 +102,6 @@ export default function Home() {
               </FadeInSection>
             </motion.div>
 
-            {/* Result Box */}
             <FadeInSection delay={0.5}>
               <div className="w-full relative mx-auto max-w-5xl p-12 xl:p-0">
                 <ResultBox
@@ -123,7 +121,7 @@ export default function Home() {
               transition={{
                 duration: 0.6,
                 delay: 1,
-                ease: [0.25, 0.8, 0.25, 1] // easeInOutQuint
+                ease: [0.25, 0.8, 0.25, 1]
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
@@ -140,7 +138,6 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Error Toast */}
       <AnimatePresence>
         {error.message && (
           <ErrorToast errorType={error.type} errorMessage={error.message} />

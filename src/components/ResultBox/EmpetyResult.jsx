@@ -7,7 +7,7 @@ export const EmptyResult = () => (
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
     transition={{ duration: 0.5, ease: "easeInOut" }}
-    className="bg-[rgba(128,120,120,0.03)] backdrop-blur-[118.2px] rounded-xl p-6 border-2 border-[#1E1E20] shadow-inner text-center"
+    className="bg-[rgba(128,120,120,0.03)] backdrop-blur-[118.2px] rounded-xl p-6 border border-[#1E1E20] shadow-inner text-center"
   >
     <p className="text-gray-400 text-sm">No matrix operations have been performed yet.</p>
     <p className="text-gray-500 text-xs mt-1">
