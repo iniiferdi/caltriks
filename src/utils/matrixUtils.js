@@ -1,11 +1,5 @@
 import { fraction } from "mathjs";
 
-/**
- * Mengecek apakah sebuah matriks valid:
- * - array of array
- * - ada isi
- * - ada nilai numerik selain kosong/null
- */
 export const isValidMatrix = (matrix) =>
   Array.isArray(matrix) &&
   matrix.length > 0 &&
