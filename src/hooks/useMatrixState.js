@@ -81,7 +81,7 @@ export function useMatrixState() {
     try {
       await delay(1000);
 
-      const singleMatrixOps = ["det", "inv", "trans", "rank", "scalar", "cofactor", "echelon"];
+      const singleMatrixOps = ["det", "inv", "trans", "rank", "scalar", "echelon"];
       const isSingleOp = singleMatrixOps.includes(type);
 
       const a = prepareMatrix(matrices.matrixA);

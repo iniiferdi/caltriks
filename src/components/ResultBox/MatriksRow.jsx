@@ -4,7 +4,6 @@ import { TransposeRow } from "./ResultMetode/TransposeRow";
 import { BasicOperationRow } from "./ResultMetode/BasicOperationRow";
 import { RankRow } from "./ResultMetode/RankRow";
 import { ScalarRow } from "./ResultMetode/ScalarRow";
-import { CofactorRow } from "./ResultMetode/CofactorRow";
 import { EchelonRow } from "./ResultMetode/EchelonRow";
 
 
@@ -30,8 +29,6 @@ export function MatrixRow({ index, entry }) {
       return <RankRow {...commonProps} />;
     case 'scalar':
       return <ScalarRow {...commonProps} scalar={entry.scalar} />;
-    case 'cofactor':
-      return <CofactorRow {...commonProps} />;
     case 'echelon':
       return <EchelonRow {...commonProps} />;
     default:

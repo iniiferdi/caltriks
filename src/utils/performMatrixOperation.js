@@ -14,7 +14,7 @@ import {
   prepareMatrix,
   isValidMatrix,
 } from './matrixUtils';
-import { getCofactorMatrix, refFraction } from './LogicMatriks';
+import { refFraction } from './LogicMatriks';
 
 const convertToFractionMatrix = (matrix) => {
   return matrix.map(row =>
@@ -71,8 +71,6 @@ export const performMatrixOperation = (
           row.map(cell => (cell ?? 0) * scalarValue)
         )
       );
-    case 'cofactor':
-      return convertToFractionMatrix(getCofactorMatrix(targetMatrix));
     case 'echelon':
       try {
         const refMatrix = refFraction(targetMatrix);
