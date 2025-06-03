@@ -1,116 +1,92 @@
 'use client';
 
-import React, { useState } from 'react';
-import { create, all } from 'mathjs';
+import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+
 import { DotBackgroundDemo } from '@/components/BackgroundDots';
 import EquationForm from '@/components/SPL/EquationForm/EquationForm';
 import MethodSelector from '@/components/SPL/MethodSelector/MethodSelector';
 import ResultBox from '@/components/SPL/ResultBox/ResultBox';
+import { ErrorToast } from '@/components/Animate/ErrorToast';
 
-const math = create(all);
+import { containerVariants, childVariants } from '@/utils/animations';
+import useSplcLogic from '@/hooks/useSplcLogic';
 
 export default function SplcPage() {
-  const [variableCount, setVariableCount] = useState(3);
-  const [inputs, setInputs] = useState(Array.from({ length: 3 }, () => Array(4).fill('')));
-  const [selectedLabel, setSelectedLabel] = useState("Solve by Gaussian elimination");
-  const [result, setResult] = useState(null);
+  const {
+    variableCount,
+    inputs,
+    error,
+    selectedLabel,
+    resultHistory,
+    handleClear,
+    handleAdd,
+    handleRemove,
+    handleInputChange,
+    setSelectedLabel,
+    handleSolve,
+  } = useSplcLogic();
 
-  console.log(inputs)
-
-  const handleClear = () => {
-    setInputs(Array.from({ length: variableCount }, () => Array(variableCount + 1).fill('')));
-    setResult(null);
-  };
-
-  const handleAdd = () => {
-    const newCount = variableCount + 1;
-    setVariableCount(newCount);
-    setInputs(Array.from({ length: newCount }, () => Array(newCount + 1).fill('')));
-    setResult(null);
-  };
-
-  const handleRemove = () => {
-    if (variableCount <= 1) return;
-    const newCount = variableCount - 1;
-    setVariableCount(newCount);
-    setInputs(Array.from({ length: newCount }, () => Array(newCount + 1).fill('')));
-    setResult(null);
-  };
-
-  const handleInputChange = (row, col, value) => {
-    const updated = [...inputs];
-    updated[row][col] = value;
-    setInputs(updated);
-  };
-
-  const gaussianEliminationFinalResult = (inputMatrix) => {
-    const m = inputMatrix.length;
-    const matrix = inputMatrix.map(row => row.map(cell => math.parse(cell || '0')));
-
-    for (let i = 0; i < m; i++) {
-      const pivot = matrix[i][i];
-      matrix[i] = matrix[i].map(cell => math.simplify(`(${cell}) / (${pivot})`));
-
-      for (let j = 0; j < m; j++) {
-        if (j !== i) {
-          const factor = matrix[j][i];
-          matrix[j] = matrix[j].map((cell, k) =>
-            math.simplify(`(${cell}) - (${factor}) * (${matrix[i][k]})`)
-          );
-        }
-      }
-    }
-
-    return matrix.map(row => row.map(cell => math.simplify(cell).toString()));
-  };
-
-  const handleSolve = () => {
-    try {
-      const augmented = inputs.map(row => row.map(cell => cell || '0'));
-      let finalMatrix;
-
-      switch (selectedLabel) {
-        case "Solve by Gaussian elimination":
-        case "Solve by Gauss–Jordan elimination":
-          finalMatrix = gaussianEliminationFinalResult(augmented);
-          break;
-        default:
-          throw new Error("Metode belum didukung.");
-      }
-
-      setResult(finalMatrix);
-    } catch (error) {
-      console.error(error);
-      setResult(error.message || 'Terjadi kesalahan.');
-    }
-  };
 
   return (
     <div className="relative flex min-h-screen w-full items-center justify-center bg-black py-36 overflow-hidden">
       <DotBackgroundDemo />
-      <div className="flex flex-col gap-8 items-center pointer-events-auto w-full max-w-fit px-4 text-white">
-        <EquationForm
-          variableCount={variableCount}
-          inputs={inputs}
-          onClear={handleClear}
-          onAdd={handleAdd}
-          onRemove={handleRemove}
-          onInputChange={handleInputChange}
-        />
-        <MethodSelector
-          selectedLabel={selectedLabel}
-          setSelectedLabel={setSelectedLabel}
-          onSolve={handleSolve}
-        />
 
-        <ResultBox
-          result={result}
-          inputMatrix={inputs}
-          label={selectedLabel}
-        />
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="flex flex-col gap-8 pointer-events-auto w-full max-w-lg px-4 text-white"
+      >
+        <motion.div variants={childVariants}>
+          <EquationForm
+            variableCount={variableCount}
+            inputs={inputs}
+            onClear={handleClear}
+            onAdd={handleAdd}
+            onRemove={handleRemove}
+            onInputChange={handleInputChange}
+
+          />
+        </motion.div>
+
+        <motion.div variants={childVariants}>
+          <MethodSelector
+            selectedLabel={selectedLabel}
+            setSelectedLabel={setSelectedLabel}
+            onSolve={handleSolve}
+          />
+        </motion.div>
 
 
-      </div>
+        {resultHistory.length > 0 && (
+          <motion.div variants={childVariants}>
+            <div className='flex flex-row justify-between items-center'>
+              <h2 className="text-md mt-4 mb-4 text-gray-400 font-semibold">Result</h2>
+             
+
+
+            </div>
+            <div className="space-y-4">
+              {resultHistory.map(entry => (
+                <ResultBox
+                  key={entry.id}
+                  result={entry.result}
+                  inputMatrix={entry.input}
+                  label={entry.method}
+                />
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+      </motion.div>
+
+      <AnimatePresence>
+        {error.message && (
+          <ErrorToast errorType={error.type} errorMessage={error.message} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

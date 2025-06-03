@@ -4,7 +4,7 @@ import EquationInputField from './EquationInputField';
 
 export default function EquationInputRow({ variableCount, rowValues, rowIdx, onInputChange }) {
     return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 justify-between">
             {Array.from({ length: variableCount }).map((_, idx) => (
                 <EquationInputField
                     key={idx}

@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function EquationInputField({ index, value, onChange, isLast }) {
     return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 justify-between">
             <input
                 type="text"
                 value={value}
