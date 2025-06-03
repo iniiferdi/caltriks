@@ -11,6 +11,8 @@
   "dependencies": {
     "@google/genai": "^0.15.0",
     "@google/generative-ai": "^0.24.1",
+    "@tsparticles/react": "^3.0.0",
+    "@tsparticles/slim": "^3.8.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "fraction.js": "^5.2.2",
@@ -30,6 +32,7 @@
     "rref": "^0.0.1",
     "tailwind-merge": "^3.2.0",
     "tesseract.js": "^2.1.5",
+    "tsparticles-slim": "^2.12.0",
     "uuid": "^11.1.0"
   },
   "devDependencies": {

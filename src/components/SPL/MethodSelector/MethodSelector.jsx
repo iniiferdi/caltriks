@@ -1,11 +1,11 @@
 'use client';
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { List, Settings, Calculator, ChevronDown } from 'lucide-react';
+import { List, ChevronDown } from 'lucide-react';
 
 const methodOptions = [
   { label: "Solve by Gaussian elimination", icon: <List size={16} className="mr-2" /> },
-  { label: "Solve by Gauss–Jordan elimination", icon: <Settings size={16} className="mr-2" /> },
+ 
   
 ];
 

@@ -1,9 +1,10 @@
-import { fraction } from 'mathjs';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from "lodash";
+import { fraction } from "mathjs";
 
-export function toFraction(value) {
-  if (typeof value === "object" && value.isFraction) return value;
-  return fraction(value);
+// Pastikan semua elemen dalam bentuk mathjs fraction
+function toFraction(val) {
+  if (typeof val === "object" && val.isFraction) return val;
+  return fraction(val);
 }
 
 export function refFraction(matrix) {
@@ -16,8 +17,9 @@ export function refFraction(matrix) {
   for (let r = 0; r < rowCount; r++) {
     if (lead >= colCount) break;
 
+    // 1. Cari baris dengan elemen bukan nol di kolom lead
     let i = r;
-    while (i < rowCount && mat[i][lead].n === 0) {
+    while (i < rowCount && mat[i][lead].s === 0) {
       i++;
     }
 
@@ -27,18 +29,21 @@ export function refFraction(matrix) {
       continue;
     }
 
+    // 2. Tukar jika perlu
     if (i !== r) {
       [mat[r], mat[i]] = [mat[i], mat[r]];
     }
 
+    // 3. Normalisasi baris pivot agar elemen lead = 1
     const pivot = mat[r][lead];
+    mat[r] = mat[r].map(val => val.div(pivot));
 
+    // 4. Eliminasi elemen di bawah pivot
     for (let j = r + 1; j < rowCount; j++) {
       const below = mat[j][lead];
-      if (below.n !== 0) {
-        const factor = below.div(pivot);
+      if (below.s !== 0) {
         mat[j] = mat[j].map((val, k) =>
-          val.sub(factor.mul(mat[r][k]))
+          val.sub(below.mul(mat[r][k]))
         );
       }
     }
@@ -46,9 +51,9 @@ export function refFraction(matrix) {
     lead++;
   }
 
-  console.log("REF Matrix:", mat);
   return mat;
 }
+
 
 
 

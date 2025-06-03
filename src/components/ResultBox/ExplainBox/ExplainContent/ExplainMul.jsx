@@ -70,7 +70,7 @@ export function ExplainMul({ entry }) {
                                 <p className="mt-2 font-semibold">Langkah:</p>
                                 <div className="space-y-2 mt-2">
                                     {entry.result.map((row, i) => (
-                                        <div key={i} className="flex flex-row gap-3">
+                                        <div key={i} className="flex flex-row gap-3 ">
                                             {row.map((_, j) => {
                                                 let sum = new Fraction(0);
                                                 const steps = [];
